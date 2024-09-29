@@ -1,0 +1,14 @@
+<div>
+  <h2>Submit a Question</h2>
+  <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
+    <div>
+      <label for="question">Question:</label>
+      <input type="text" id="question" required [(ngModel)]="question" name="question">
+    </div>
+    <button type="submit" [disabled]="!questionForm.form.valid">Submit</button>
+  </form>
+  <div *ngIf="response">
+    <h3>Response:</h3>
+    <pre>{{ response | json }}</pre>
+  </div>
+</div>
