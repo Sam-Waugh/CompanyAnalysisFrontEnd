@@ -8,7 +8,11 @@
     <button type="submit" [disabled]="!questionForm.form.valid">Submit</button>
   </form>
   <div *ngIf="response">
-    <h3>Response:</h3>
+    <h3>ChatGPT Response:</h3>
     <pre>{{ response | json }}</pre>
+  </div>
+   <div *ngIf="responsePerplexity">
+    <h3>Perplexity Response:</h3>
+    <pre>{{ responsePerplexity | json }}</pre>
   </div>
 </div>
