@@ -65,8 +65,8 @@
     width: 100%;
     min-height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     padding: 1rem;
     box-sizing: inherit;
     position: relative;
@@ -80,7 +80,7 @@
     display: flex;
     justify-content: space-around;
     width: 100%;
-    max-width: 700px;
+    max-width: 100%;
     margin-bottom: 3rem;
   }
 
@@ -165,7 +165,7 @@
   @media screen and (max-width: 650px) {
     .content {
       flex-direction: column;
-      width: max-content;
+      width: 100%;
     }
 
     .divider {
@@ -225,7 +225,7 @@
           <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
         </defs>
       </svg>
-      <h1>Hello, {{ title }}</h1>
+      <h1>AI Company Analysis</h1>
       <p>This is the Frontend of my AI Project🎉</p>
       <app-question-form></app-question-form>
     </div>

@@ -1,0 +1,37 @@
+
+.input-container {
+    display: flex;
+    /* Enables flexbox layout */
+    align-items: center;
+    /* Aligns items vertically */
+}
+
+.flexible-input {
+    flex-grow: 1;
+    /* Allows the input to grow and fill available space */
+    max-width: 100%;
+    /* Ensures the input doesn’t exceed the container width */
+    padding: 8px;
+    /* Optional: Adds padding for better usability */
+    border: 1px solid #ccc;
+    /* Optional: Adds a border */
+    border-radius: 4px;
+    /* Optional: Rounds the corners of the input */
+    margin-left: 10px;
+    /* Optional: Adds some space between label and input */
+}
+
+.json-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+mat-card-content {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
