@@ -21,9 +21,10 @@
     /* Optional: Adds some space between label and input */
 }
 
-.json-card {
+::ng-deep .mat-card .json-card .mat-mdc-card .mdc-elevated-card-container-color{
     width: 100%;
     box-sizing: border-box;
+    background-color: palegreen !important;
 }
 
 mat-card-content {
@@ -31,7 +32,8 @@ mat-card-content {
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow: auto;
-    background-color: #f8f8f8;
+    background-color: #ffffff;
     padding: 10px;
     border: 1px solid #ccc;
+    color:#ccc
 }
