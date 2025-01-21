@@ -1,0 +1,47 @@
+
+.input-container {
+    display: flex;
+    /* Enables flexbox layout */
+    align-items: center;
+    /* Aligns items vertically */
+}
+
+.flexible-input {
+    flex-grow: 1;
+    /* Allows the input to grow and fill available space */
+    max-width: 100%;
+    /* Ensures the input doesn’t exceed the container width */
+    padding: 8px;
+    /* Optional: Adds padding for better usability */
+    border: 1px solid #ccc;
+    /* Optional: Adds a border */
+    border-radius: 4px;
+    /* Optional: Rounds the corners of the input */
+    margin-left: 10px;
+    /* Optional: Adds some space between label and input */
+}
+
+::ng-deep .mat-card .json-card .mat-mdc-card .mdc-elevated-card-container-color{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: palegreen !important;
+}
+
+mat-card-content {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    color:#ccc
+}
+
+@use '@angular/material' as mat;
+
+:host {
+    @include mat.card-overrides((subtitle-text-color: orange,
+            elevated-container-color: red,
+        ));
+}

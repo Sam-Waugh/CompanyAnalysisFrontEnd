@@ -1,9 +1,9 @@
 import { Component, NgModule, ViewEncapsulation  } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { QuestionService } from '../services/question.service';
+import { QuestionService } from '../services/question/question.service';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { QuestionPerplexityService } from '../services/question-perplexity.service';
+import { QuestionPerplexityService } from '../services/question/question-perplexity.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 

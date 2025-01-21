@@ -2,13 +2,21 @@
 
 @use '@angular/material' as mat;
 
-// Customize the entire app. Change :root to your selector if you want to scope the styles.
-// :root {
-//     @include mat.card-overrides((
-//             container-color: palegreen,
-//         ));
-// }
+//Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+    @include mat.card-overrides((
+            outlined-container-color: rgba(30, 229, 229, 0.95),
+        ));
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.content {
+        display: flex;
+        /* Use flexbox layout */
+        flex-direction: column;
+        /* Stack children vertically */
+        gap: 1rem;
+        /* Add spacing between elements */
+    }

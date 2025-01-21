@@ -1,16 +1,15 @@
-@use '@angular/material' as mat;
-@use '@angular/material/core' as mat-core;
+// @use '@angular/material' as mat;
 
-html {
-    @include mat.theme((color: (primary: mat.$violet-palette, // Primary colour palette.
-                tertiary: mat.$orange-palette, // Tertiary (accent) colour palette.
-                theme-type: light // Only light mode colours.
-            ),
-            typography: Roboto,
-            density: 0));
-}
+// html {
+//     @include mat.theme((color: (primary: mat.$violet-palette, // Primary colour palette.
+//                 tertiary: mat.$orange-palette, // Tertiary (accent) colour palette.
+//                 theme-type: light // Only light mode colours.
+//             ),
+//             typography: Roboto,
+//             density: 0));
+// }
 
-body {
-    background: var(--mat-sys-surface);
-    color: var(--mat-sys-on-surface);
-}
+// body {
+//     background: var(--mat-sys-surface);
+//     color: var(--mat-sys-on-surface);
+// }

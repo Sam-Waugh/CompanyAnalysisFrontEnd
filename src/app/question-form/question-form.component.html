@@ -1,7 +1,6 @@
 <div>
   <h2>Submit a Question</h2>
   <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
-    <mat-slide-toggle>Toggle me!</mat-slide-toggle>
     <div class="input-container">
       <label for="question">Question:</label>
       <input type="text" id="question" required [(ngModel)]="question" name="question" class="flexible-input">
