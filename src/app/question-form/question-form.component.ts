@@ -1,16 +1,18 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, ViewEncapsulation  } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { QuestionService } from '../services/question.service';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QuestionPerplexityService } from '../services/question-perplexity.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @Component({
-  selector: 'app-question-form',
-  templateUrl: './question-form.component.html',
-  standalone: true,
-  imports: [JsonPipe, FormsModule, CommonModule, MatCardModule],
+    selector: 'app-question-form',
+    templateUrl: './question-form.component.html',
+    standalone: true, 
+    imports: [JsonPipe, FormsModule, CommonModule, MatCardModule, MatSlideToggleModule],
+    encapsulation: ViewEncapsulation.None
 })
   
 export class QuestionFormComponent {

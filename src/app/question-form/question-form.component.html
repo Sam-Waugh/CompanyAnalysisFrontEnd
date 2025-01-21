@@ -1,26 +1,31 @@
 <div>
   <h2>Submit a Question</h2>
   <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
+    <mat-slide-toggle>Toggle me!</mat-slide-toggle>
     <div class="input-container">
       <label for="question">Question:</label>
       <input type="text" id="question" required [(ngModel)]="question" name="question" class="flexible-input">
     </div>
     <button type="submit" [disabled]="!questionForm.form.valid">Submit</button>
   </form>
+  <br>
   <div *ngIf="response">
-    <mat-card class="json-card">
+    <mat-card appearance="outlined" class="json-card">
     <mat-card-header><h3>ChatGPT Response:</h3></mat-card-header>
     <mat-card-content>
     {{ response | json }}
     </mat-card-content>
+    <mat-card-footer></mat-card-footer>
     </mat-card>
   </div>
-   <div *ngIf="responsePerplexity">
-    <mat-card class="json-card">
+  <br>
+  <div *ngIf="responsePerplexity">
+    <mat-card appearance="outlined" class="json-card">
     <mat-card-header><h3>Perplexity Response:</h3></mat-card-header>
     <mat-card-content>
     {{ responsePerplexity | json }}
     </mat-card-content>
+    <mat-card-footer></mat-card-footer>
     </mat-card>
   </div>
 </div>
