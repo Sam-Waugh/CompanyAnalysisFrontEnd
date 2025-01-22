@@ -1,21 +1,64 @@
-<div class="chatbot-container">
-  <textarea
-    [(ngModel)]="userInput"
-    placeholder="Type your question here..."
-    rows="4"
-    cols="50"
-  ></textarea>
-  <button (click)="onSubmit()" [disabled]="isLoading || !userInput.trim()">Ask</button>
+<!-- <mat-toolbar>
+  Angular Dark Mode
+  <div class="flex-stretch"></div>
+  <button mat-icon-button [mat-menu-trigger-for]="themeMenu">
+    <mat-icon>{{ selectedTheme()?.icon }}</mat-icon>
+  </button>
+  <mat-menu #themeMenu="matMenu">
+    @for (theme of themes(); track theme.name) {
+    <button
+      [class.selected-theme]="selectedTheme().name === theme.name"
+      mat-menu-item
+      (click)="appTheme.set(theme.name)"
+    >
+      <mat-icon>{{ theme.icon }}</mat-icon>
+      <span>{{ theme.name | titlecase }}</span>
+    </button>
+    }
+  </mat-menu>
+</mat-toolbar> -->
+<main class="main">
+  <div class="content">
+    <h1>AI Company Analysis</h1>
+    <br />
+    <h2>ChatBot</h2>
+    <div>
+      <div class="chatbot-container">
+        <div *ngIf="!isCompleted">
+          <div *ngIf="isLoading">Loading...</div>
+          <!-- <div *ngIf="currentQuestion && !isLoading"> -->
+            <mat-card appearance="outlined" class="json-card" class="accent">
+              <mat-card-header><h3>Chatbot:</h3></mat-card-header>
+              <mat-card-content>
+                <div>
+                <p>{{ currentQuestion }}</p>
+                </div>
+                <input [(ngModel)]="userResponse" placeholder="Your answer" />
+              </mat-card-content>
+              <mat-card-footer></mat-card-footer>
+            </mat-card>
+          <!-- </div> -->
+          <button
+            (click)="submitResponse(userResponse)"
+            [disabled]="isLoading || !userResponse.trim()"
+          >
+            Submit
+          </button>
+        </div>
 
-  <div *ngIf="isLoading">Loading...</div>
-  <div *ngIf="chatResponse && !isLoading">
-    <mat-card appearance="outlined" class="json-card">
-    <mat-card-header><h3>Response:</h3></mat-card-header>
-    <mat-card-content>
-    {{ chatResponse | json }}
-    </mat-card-content>
-    <mat-card-footer></mat-card-footer>
-    </mat-card>
+        <div *ngIf="isCompleted">
+          <h3>Final Response</h3>
+          <p>{{ finalResponse.llm_response }}</p>
+          <h4>Relevant Documents</h4>
+          <ul>
+            <li *ngFor="let doc of finalResponse.relevant_documents">
+              {{ doc.content }}
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+      </div>
+    </div>
+    <div class="divider" role="separator" aria-label="Divider"></div>
   </div>
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-</div>
+</main>

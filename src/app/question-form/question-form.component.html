@@ -1,30 +1,57 @@
-<div>
-  <h2>Submit a Question</h2>
-  <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
-    <div class="input-container">
-      <label for="question">Question:</label>
-      <input type="text" id="question" required [(ngModel)]="question" name="question" class="flexible-input">
-    </div>
-    <button type="submit" [disabled]="!questionForm.form.valid">Submit</button>
-  </form>
-  <br>
-  <div *ngIf="response">
-    <mat-card appearance="outlined" class="json-card">
-    <mat-card-header><h3>ChatGPT Response:</h3></mat-card-header>
-    <mat-card-content>
-    {{ response | json }}
-    </mat-card-content>
-    <mat-card-footer></mat-card-footer>
-    </mat-card>
+<!-- <mat-toolbar>
+  Angular Dark Mode
+  <div class="flex-stretch"></div>
+  <button mat-icon-button [mat-menu-trigger-for]="themeMenu">
+    <mat-icon>{{ selectedTheme()?.icon }}</mat-icon>
+  </button>
+  <mat-menu #themeMenu="matMenu">
+    @for (theme of themes(); track theme.name) {
+    <button
+      [class.selected-theme]="selectedTheme().name === theme.name"
+      mat-menu-item
+      (click)="appTheme.set(theme.name)"
+    >
+      <mat-icon>{{ theme.icon }}</mat-icon>
+      <span>{{ theme.name | titlecase }}</span>
+    </button>
+    }
+  </mat-menu>
+</mat-toolbar> -->
+<main class="main">
+  <div class="content">
+      <h1>AI Company Analysis</h1>
+      <div>
+        <h2>Submit a Question</h2>
+        <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
+          <div class="input-container">
+            <label for="question">Question:</label>
+            <input type="text" id="question" required [(ngModel)]="question" name="question" class="flexible-input">
+          </div>
+          <button class="accent" type="submit" [disabled]="!questionForm.form.valid">Submit</button>
+        </form>
+        <br>
+        <div *ngIf="response">
+          <mat-card appearance="outlined" class="json-card" class="accent">
+          <mat-card-header><h3>ChatGPT Response:</h3></mat-card-header>
+          <mat-card-content>
+          {{ response | json }}
+          <br>
+          </mat-card-content>
+          <mat-card-footer></mat-card-footer>
+          </mat-card>
+        </div>
+        <br>
+        <div *ngIf="responsePerplexity">
+          <mat-card appearance="outlined" class="json-card" class="accent">
+          <mat-card-header><h3>Perplexity Response:</h3></mat-card-header>
+          <mat-card-content >
+          {{ responsePerplexity | json }}
+          <br>
+          </mat-card-content>
+          <mat-card-footer></mat-card-footer>
+          </mat-card>
+        </div>
+      </div>
+    <div class="divider" role="separator" aria-label="Divider"></div>
   </div>
-  <br>
-  <div *ngIf="responsePerplexity">
-    <mat-card appearance="outlined" class="json-card">
-    <mat-card-header><h3>Perplexity Response:</h3></mat-card-header>
-    <mat-card-content>
-    {{ responsePerplexity | json }}
-    </mat-card-content>
-    <mat-card-footer></mat-card-footer>
-    </mat-card>
-  </div>
-</div>
+</main>

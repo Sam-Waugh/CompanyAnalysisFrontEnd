@@ -10,9 +10,15 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @Component({
     selector: 'app-question-form',
     templateUrl: './question-form.component.html',
+    styleUrls: ['./question-form.component.css'],
     standalone: true, 
     imports: [JsonPipe, FormsModule, CommonModule, MatCardModule, MatSlideToggleModule],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    template: `
+      <app-header></app-header>
+      <app-content></app-content>
+    `,
+    styles: ``,
 })
   
 export class QuestionFormComponent {

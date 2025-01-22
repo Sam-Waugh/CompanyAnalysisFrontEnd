@@ -10,31 +10,82 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @Component({
     selector: 'app-chatbot',
     templateUrl: './chatbot.component.html',
+    styleUrls: ['./chatbot.component.css'],
     standalone: true, 
-    imports: [JsonPipe, FormsModule, CommonModule, MatCardModule, MatSlideToggleModule],
-    encapsulation: ViewEncapsulation.None
+    imports: [FormsModule, CommonModule, MatCardModule, MatSlideToggleModule],
+    encapsulation: ViewEncapsulation.None,
+    template: `
+      <app-header></app-header>
+      <app-content></app-content>
+    `,
+    styles: ``,
 })
   
 export class ChatbotComponent {
-  userInput: string = '';
-  chatResponse: string = '';
+  userResponse: string = '';
+  currentQuestion: string = '';
+  sessionId: string = '';
+  chatHistory: { question: string, answer: string }[] = [];
+  isCompleted: boolean = false;
+  finalResponse: any = null;
   isLoading: boolean = false;
   errorMessage: string = '';
 
-  constructor(private chatbotService: ChatbotService) {}
+  constructor(private chatbotService: ChatbotService) {
+    this.startChat();
+  }
 
-  onSubmit() {
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.chatbotService.submitQuestion(this.userInput).subscribe({
-      next: (response) => {
-        this.chatResponse = response.message; // Update based on API's response format
-        this.isLoading = false;
+  startChat(): void {
+    this.sessionId = this.generateSessionId();
+    this.submitResponse(null);
+  }
+
+  submitResponse(response: string | null): void {
+    this.chatbotService.submitChatbotResponse(this.sessionId, response).subscribe({
+      next: (res) => {
+        if (res.status === 'in_progress') {
+          if (response) {
+            this.chatHistory.push({ question: this.currentQuestion, answer: response });
+          }
+          this.currentQuestion = res.question;
+        } else if (res.status === 'complete') {
+          this.isCompleted = true;
+          this.finalResponse = res.result;
+          this.isLoading = false;
+        }
       },
-      error: (error) => {
-        this.errorMessage = error.message;
+      error: (err) => {
+        console.error('Error in chatbot flow:', err);
+        alert('Something went wrong. Please try again.')
         this.isLoading = false;
-      },
+      }
     });
   }
+
+  generateSessionId(): string {
+    return Math.random().toString(36).substr(2, 9); // Simple session ID generation
+  }
+
+  // onSubmit() {
+  //   this.isLoading = true;
+  //   this.errorMessage = '';
+  //   if (!this.userInput.trim() || !this.industry.trim() || !this.businessGoal.trim()) {
+  //     alert('Please fill in all fields.');
+  //     return;
+  //   }
+
+  //   this.chatbotService.submitQuestion(this.userInput, this.industry, this.businessGoal).subscribe({
+  //     next: (res) => {
+  //       this.chatResponse = res.response; // Update based on API's response format
+  //       this.followUpQuestions = res.follow_up_questions;
+  //       this.isLoading = false;
+  //     },
+  //     error: (error) => {
+  //       this.errorMessage = error.message;
+  //       this.chatResponse = 'An error occurred. Please try again later.';
+  //       this.followUpQuestions = [];
+  //       this.isLoading = false;
+  //     },
+  //   });
+  // }
 }
