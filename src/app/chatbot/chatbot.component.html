@@ -24,10 +24,10 @@
     <h2>ChatBot</h2>
     <div>
       <div class="chatbot-container">
-        <div *ngIf="!isCompleted">
-          <div *ngIf="isLoading">Loading...</div>
+        <div *ngIf="isLoading">Loading...</div>
+          <div *ngIf="!isCompleted && !isLoading">
           <!-- <div *ngIf="currentQuestion && !isLoading"> -->
-            <mat-card appearance="outlined" class="json-card" class="accent">
+            <mat-card appearance="outlined" class="json-card accent">
               <mat-card-header><h3>Chatbot:</h3></mat-card-header>
               <mat-card-content>
                 <div>
@@ -40,7 +40,7 @@
           <!-- </div> -->
           <button
             (click)="submitResponse(userResponse)"
-            [disabled]="isLoading || !userResponse.trim()"
+            [disabled]="!userResponse.trim()"
           >
             Submit
           </button>

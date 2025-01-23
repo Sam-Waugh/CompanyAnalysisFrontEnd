@@ -40,9 +40,15 @@ export class ChatbotComponent {
     this.submitResponse(null);
   }
 
+  /**
+  * Handles user responses and submits them to the backend.
+  * @param response - User's response to the current question.
+  */
   submitResponse(response: string | null): void {
+    this.isLoading = true;
     this.chatbotService.submitChatbotResponse(this.sessionId, response).subscribe({
       next: (res) => {
+        this.isLoading = false;
         if (res.status === 'in_progress') {
           if (response) {
             this.chatHistory.push({ question: this.currentQuestion, answer: response });
@@ -51,7 +57,6 @@ export class ChatbotComponent {
         } else if (res.status === 'complete') {
           this.isCompleted = true;
           this.finalResponse = res.result;
-          this.isLoading = false;
         }
       },
       error: (err) => {
@@ -63,9 +68,17 @@ export class ChatbotComponent {
   }
 
   generateSessionId(): string {
-    return Math.random().toString(36).substr(2, 9); // Simple session ID generation
+    return Math.random().toString(36).substring(2, 11); // Simple session ID generation
   }
 
+  onSubmit(): void {
+    if (this.userResponse.trim()) {
+      const response = this.userResponse.trim();
+      this.userResponse = ''; // Clear the input field
+      this.submitResponse(response);
+    }
+  }
+  
   // onSubmit() {
   //   this.isLoading = true;
   //   this.errorMessage = '';
