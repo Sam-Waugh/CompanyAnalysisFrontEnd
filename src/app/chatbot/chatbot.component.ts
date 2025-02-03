@@ -23,13 +23,15 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   
 export class ChatbotComponent {
   userResponse: string = '';
-  currentQuestion: string = '';
+  currentQuestion: string = 'What business topic are you interested in?';
   sessionId: string = '';
   chatHistory: { question: string, answer: string }[] = [];
   isCompleted: boolean = false;
-  finalResponse: any = null;
+  finalResponse: { llm_response: string; relevant_documents: { content: string }[] } | null = null; 
   isLoading: boolean = false;
   errorMessage: string = '';
+  isFeedbackStage: boolean = false;
+  feedback: string = '';
 
   constructor(private chatbotService: ChatbotService) {
     this.startChat();
@@ -37,15 +39,17 @@ export class ChatbotComponent {
 
   startChat(): void {
     this.sessionId = this.generateSessionId();
-    this.submitResponse(null);
+    //this.submitResponse(null);
   }
 
   /**
   * Handles user responses and submits them to the backend.
   * @param response - User's response to the current question.
   */
-  submitResponse(response: string | null): void {
+  submitResponse(response: string): void {
+    if (!response.trim()) return;
     this.isLoading = true;
+    this.chatHistory.push({ question: this.currentQuestion, answer: response });
     this.chatbotService.submitChatbotResponse(this.sessionId, response).subscribe({
       next: (res) => {
         this.isLoading = false;
@@ -56,12 +60,38 @@ export class ChatbotComponent {
           this.currentQuestion = res.question;
         } else if (res.status === 'complete') {
           this.isCompleted = true;
-          this.finalResponse = res.result;
+          this.finalResponse = {
+            llm_response: res.result.llm_response || 'No response available',
+            relevant_documents: res.result.relevant_documents || [],
+          };
+          this.isFeedbackStage = true;
+          this.currentQuestion = "Did this report meet your expectations? Provide feedback:";
         }
       },
       error: (err) => {
         console.error('Error in chatbot flow:', err);
         alert('Something went wrong. Please try again.')
+        this.isLoading = false;
+      }
+    });
+  }
+
+  /**
+   * Handles user feedback submission after article generation.
+   */
+  submitFeedback(): void {
+    if (!this.feedback.trim()) return;
+
+    this.isLoading = true;
+    this.chatbotService.submitUserFeedback(this.sessionId, this.feedback).subscribe({
+      next: () => {
+        this.isLoading = false;
+        alert('Thank you for your feedback!');
+        this.isFeedbackStage = false;
+      },
+      error: (err) => {
+        console.error('Error submitting feedback:', err);
+        alert('Something went wrong. Please try again.');
         this.isLoading = false;
       }
     });

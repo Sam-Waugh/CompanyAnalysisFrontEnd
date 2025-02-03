@@ -25,6 +25,21 @@ export class ChatbotService {
   //   );
   // }
 
+/**
+   * Starts a new chatbot session and fetches the first question.
+   * @returns Observable<any> - The backend's initial question.
+   */
+  startChatSession(): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(`${this.chatbotEndpoint}/start-session`, {}, { headers }).pipe(
+      map((response) => {
+        console.log('Chat session started:', response);
+        return response;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   /**
    * Submits user responses to the chatbot backend.
    * @param sessionId - Unique session identifier for the user.
@@ -48,6 +63,52 @@ export class ChatbotService {
       catchError(this.handleError)
     );
   }
+
+  /**
+   * Fetches the next question for a given session.
+   * @param sessionId - Unique session identifier for the user.
+   * @returns Observable<any> - The backend's response with the next question.
+   */
+  getNextQuestion(sessionId: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const url = `${this.chatbotEndpoint}/next-question`;
+    return this.http.get<any>(`${this.chatbotEndpoint}/next-question`, { headers, params: { session_id: sessionId } }).pipe(
+      map((response) => {
+        console.log('Next question response:', response);
+        return response;
+      }),
+    // return this.http.get<any>(url, { headers, params: { session_id: sessionId } }).pipe(
+    //   map((response) => {
+    //     console.log('Next question response:', response);
+    //     return response;
+    //   }),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * Sends user feedback to the backend.
+   * @param sessionId - Unique session identifier for the user.
+   * @param feedback - User feedback on the chatbot's response or generated content.
+   * @returns Observable<any> - The backend's response.
+   */
+  submitUserFeedback(sessionId: string, feedback: string): Observable<any> {
+    const payload = {
+      session_id: sessionId,
+      feedback: feedback,
+    };
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    //const url = `${this.chatbotEndpoint}/feedback`;
+    return this.http.post<any>(`${this.chatbotEndpoint}/feedback`, payload, { headers }).pipe(
+    //return this.http.post<any>(url, payload, { headers }).pipe(
+      map((response) => {
+        console.log('Feedback submission response:', response);
+        return response;
+      }),
+      catchError(this.handleError)
+    );
+  }
   
  /**
    * Handles errors from HTTP requests.
@@ -66,47 +127,5 @@ export class ChatbotService {
       errorMessage = `Server returned code ${error.status}, error message: ${error.message}`;
     }
     return throwError(() => new Error(errorMessage));
-  }
-
-  /**
-   * Fetches the next question for a given session.
-   * @param sessionId - Unique session identifier for the user.
-   * @returns Observable<any> - The backend's response with the next question.
-   */
-  getNextQuestion(sessionId: string): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.chatbotEndpoint}/next-question`;
-
-    return this.http.get<any>(url, { headers, params: { session_id: sessionId } }).pipe(
-      map((response) => {
-        console.log('Next question response:', response);
-        return response;
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  /**
-   * Sends user feedback to the backend.
-   * @param sessionId - Unique session identifier for the user.
-   * @param feedback - User feedback on the chatbot's response or generated content.
-   * @returns Observable<any> - The backend's response.
-   */
-  submitUserFeedback(sessionId: string, feedback: string): Observable<any> {
-    const payload = {
-      session_id: sessionId,
-      feedback: feedback,
-    };
-
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.chatbotEndpoint}/feedback`;
-
-    return this.http.post<any>(url, payload, { headers }).pipe(
-      map((response) => {
-        console.log('Feedback submission response:', response);
-        return response;
-      }),
-      catchError(this.handleError)
-    );
   }
 }
