@@ -1,67 +1,3 @@
-<!-- <mat-toolbar>
-  Angular Dark Mode
-  <div class="flex-stretch"></div>
-  <button mat-icon-button [mat-menu-trigger-for]="themeMenu">
-    <mat-icon>{{ selectedTheme()?.icon }}</mat-icon>
-  </button>
-  <mat-menu #themeMenu="matMenu">
-    @for (theme of themes(); track theme.name) {
-    <button
-      [class.selected-theme]="selectedTheme().name === theme.name"
-      mat-menu-item
-      (click)="appTheme.set(theme.name)"
-    >
-      <mat-icon>{{ theme.icon }}</mat-icon>
-      <span>{{ theme.name | titlecase }}</span>
-    </button>
-    }
-  </mat-menu>
-</mat-toolbar> -->
-<!-- <main class="main">
-  <div class="content">
-    <h1>AI Company Analysis</h1>
-    <br />
-    <h2>ChatBot</h2>
-    <div>
-      <div class="chatbot-container">
-        <div *ngIf="isLoading">Loading...</div>
-          <div *ngIf="!isCompleted && !isLoading">
-          <div *ngIf="currentQuestion && !isLoading">
-            <mat-card appearance="outlined" class="json-card accent">
-              <mat-card-header><h3>Chatbot:</h3></mat-card-header>
-              <mat-card-content>
-                <div>
-                <p>{{ currentQuestion }}</p>
-                </div>
-                <input [(ngModel)]="userResponse" placeholder="Your answer" />
-              </mat-card-content>
-              <mat-card-footer></mat-card-footer>
-            </mat-card>
-          </div>
-          <button
-            (click)="submitResponse(userResponse)"
-            [disabled]="!userResponse.trim()"
-          >
-            Submit
-          </button>
-        </div>
-
-        <div *ngIf="isCompleted">
-          <h3>Final Response</h3>
-          <p>{{ finalResponse.llm_response }}</p>
-          <h4>Relevant Documents</h4>
-          <ul>
-            <li *ngFor="let doc of finalResponse.relevant_documents">
-              {{ doc.content }}
-            </li>
-          </ul>
-        </div>
-        <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-      </div>
-    </div>
-    <div class="divider" role="separator" aria-label="Divider"></div>
-  </div>
-</main> -->
 <main class="main">
   <div class="content">
     <h1>AI Company Analysis</h1>
@@ -72,27 +8,13 @@
       <!-- Loading Indicator -->
       <div *ngIf="isLoading" class="loading">Loading...</div>
 
-      <!-- Chat History -->
-      <div *ngIf="chatHistory.length > 0" class="chat-history">
-        <mat-card appearance="outlined">
-          <mat-card-header><h3>Chat History</h3></mat-card-header>
-          <mat-card-content>
-            <div *ngFor="let chat of chatHistory">
-              <p><strong>You:</strong> {{ chat.answer }}</p>
-              <p><strong>Chatbot:</strong> {{ chat.question }}</p>
-              <hr />
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
       <!-- Chatbot Question and User Input -->
       <div *ngIf="!isCompleted && !isLoading">
         <mat-card appearance="outlined">
           <mat-card-header><h3>Chatbot:</h3></mat-card-header>
           <mat-card-content>
             <p>{{ currentQuestion }}</p>
-            <input [(ngModel)]="userResponse" placeholder="Your answer" />
+            <input [(ngModel)]="userResponse" type="text" placeholder="Type your response here" [disabled]="!currentQuestion || isLoading" />
           </mat-card-content>
         </mat-card>
         <button (click)="submitResponse(userResponse)" [disabled]="!userResponse.trim()">Submit</button>
@@ -107,24 +29,42 @@
           </mat-card-content>
         </mat-card>
 
-        <!-- Relevant Documents -->
-        <h4>Relevant Documents</h4>
-        <mat-card appearance="outlined">
-          <mat-card-content>
-            <ul>
-              <li *ngFor="let doc of finalResponse?.relevant_documents">
-                {{ doc?.content }}
-              </li>
-            </ul>
-          </mat-card-content>
-        </mat-card>
+        <!-- Download Format Selection -->
+        <div>
+          <label for="download-format">Choose download format: </label>
+          <select id="download-format" [(ngModel)]="selectedFormat">
+            <option value="txt">Text (.txt)</option>
+            <option value="pdf">PDF (.pdf)</option>
+          </select>
+        </div>
+
+        <!-- Download Report Button -->
+        <button mat-raised-button (click)="downloadReport()">Download Report</button>
 
         <!-- Feedback Section -->
         <div *ngIf="isFeedbackStage">
-          <h3>Feedback</h3>
-          <textarea [(ngModel)]="feedback" placeholder="Provide your feedback..."></textarea>
-          <button (click)="submitFeedback()">Submit Feedback</button>
+          <mat-card appearance="outlined">
+            <mat-card-header><h3>Feedback</h3></mat-card-header>
+            <mat-card-content>
+              <textarea [(ngModel)]="feedback" placeholder="Provide your feedback..."></textarea>
+              <button (click)="submitFeedback()">Submit Feedback</button>
+            </mat-card-content>
+          </mat-card>
         </div>
+      </div>
+
+      <!-- Chat History -->
+      <div *ngIf="chatHistory.length > 0" class="chat-history">
+        <mat-card appearance="outlined">
+          <mat-card-header><h3>Chat History</h3></mat-card-header>
+          <mat-card-content>
+            <div *ngFor="let chat of chatHistory">
+              <p><strong>Chatbot:</strong> {{ chat.question }}</p>
+              <p><strong>You:</strong> {{ chat.answer }}</p>
+              <hr />
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
 
       <!-- Error Message -->

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -31,11 +31,13 @@ export class ChatbotService {
    */
   startChatSession(): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(`${this.chatbotEndpoint}/start-session`, {}, { headers }).pipe(
-      map((response) => {
-        console.log('Chat session started:', response);
-        return response;
-      }),
+
+    return this.http.post<any>(`${this.chatbotEndpoint}`, {}, { headers }).pipe(
+      tap(response => console.log('Chat session started:', response)),
+      // map((response) => {
+      //   console.log('Chat session started:', response);
+      //   return response;
+      // }),
       catchError(this.handleError)
     );
   }
@@ -69,22 +71,29 @@ export class ChatbotService {
    * @param sessionId - Unique session identifier for the user.
    * @returns Observable<any> - The backend's response with the next question.
    */
-  getNextQuestion(sessionId: string): Observable<any> {
+  getNextQuestion(sessionId: string, userResponse: string = ''): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.chatbotEndpoint}/next-question`;
-    return this.http.get<any>(`${this.chatbotEndpoint}/next-question`, { headers, params: { session_id: sessionId } }).pipe(
-      map((response) => {
-        console.log('Next question response:', response);
-        return response;
-      }),
+    const requestBody = { session_id: sessionId, user_response: userResponse };
+
+    return this.http.post<any>(`${this.chatbotEndpoint}`, requestBody, { headers }).pipe(
+      tap(response => console.log('Next question response:', response)),
+      catchError(this.handleError)
+    );
+  }
+    //const url = `${this.chatbotEndpoint}/next-question`;
+    //return this.http.get<any>(`${this.chatbotEndpoint}/next-question`, { headers, params: { session_id: sessionId } }).pipe(
+      //map((response) => {
+        //console.log('Next question response:', response);
+        //return response;
+      //}),
     // return this.http.get<any>(url, { headers, params: { session_id: sessionId } }).pipe(
     //   map((response) => {
     //     console.log('Next question response:', response);
     //     return response;
     //   }),
-      catchError(this.handleError)
-    );
-  }
+      //catchError(this.handleError)
+    //);
+  //}
 
   /**
    * Sends user feedback to the backend.

@@ -5,6 +5,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatbotPerplexityService } from '../services/chatbot/chatbot-perplexity.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { jsPDF } from 'jspdf';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   
 export class ChatbotComponent {
   userResponse: string = '';
-  currentQuestion: string = 'What business topic are you interested in?';
+  currentQuestion: string = '';
   sessionId: string = '';
   chatHistory: { question: string, answer: string }[] = [];
   isCompleted: boolean = false;
@@ -32,6 +33,7 @@ export class ChatbotComponent {
   errorMessage: string = '';
   isFeedbackStage: boolean = false;
   feedback: string = '';
+  selectedFormat: string = 'txt'; // Default to .txt format
 
   constructor(private chatbotService: ChatbotService) {
     this.startChat();
@@ -39,7 +41,19 @@ export class ChatbotComponent {
 
   startChat(): void {
     this.sessionId = this.generateSessionId();
-    //this.submitResponse(null);
+    this.isLoading = true; // Indicate loading while chatbot fetches the first question
+
+    this.chatbotService.getNextQuestion(this.sessionId).subscribe({
+      next: (res) => {
+        this.currentQuestion = res.question; // Set the first question
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error getting initial question:', err);
+        this.errorMessage = 'Failed to load chatbot question.';
+        this.isLoading = false;
+      }
+    });
   }
 
   /**
@@ -54,10 +68,8 @@ export class ChatbotComponent {
       next: (res) => {
         this.isLoading = false;
         if (res.status === 'in_progress') {
-          if (response) {
-            this.chatHistory.push({ question: this.currentQuestion, answer: response });
-          }
           this.currentQuestion = res.question;
+          this.userResponse = '';
         } else if (res.status === 'complete') {
           this.isCompleted = true;
           this.finalResponse = {
@@ -109,6 +121,25 @@ export class ChatbotComponent {
     }
   }
   
+  downloadReport(): void {
+    const articleContent = this.finalResponse?.llm_response || 'No content available';
+    const blob: Blob = this.selectedFormat === 'txt'
+      ? new Blob([articleContent], { type: 'text/plain' })
+      : this.createPdfBlob(articleContent);
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = this.selectedFormat === 'txt' ? 'generated_report.txt' : 'generated_report.pdf';
+    link.click();
+  }
+
+  // Helper function to create a PDF Blob from content
+  createPdfBlob(content: string): Blob {
+    const pdfDoc = new jsPDF();
+    pdfDoc.text(content, 10, 10); // Starting point (x, y) in PDF
+    return pdfDoc.output('blob');
+  }
+
   // onSubmit() {
   //   this.isLoading = true;
   //   this.errorMessage = '';
