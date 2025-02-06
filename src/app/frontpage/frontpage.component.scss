@@ -1,0 +1,121 @@
+// .main-content {
+//     display: flex;
+//     justify-content: space-between;
+// }
+
+// .feed-container {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     gap: 30px;
+//     padding: 40px 20px;
+//     background-color: #f4f4f4;
+//     flex: 1;
+//     flex-grow:1;
+//     margin-right: 300px;
+//     padding: 20px;
+//     overflow-y: auto;
+// }
+
+mat-card {
+    width: 80%;
+    max-width: 700px;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: white;
+}
+
+mat-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+mat-card-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+mat-card-content {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.feedback-container {
+    width: 80%;
+    max-width: 700px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.feedback-container h2 {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feedback-options {
+    display: flex;
+    justify-content: space-around;
+}
+
+.feedback-options button {
+    background-color: #28a745;
+    color: white;
+}
+
+.feedback-options button:hover {
+    background-color: #218838;
+}
+
+/* Read More clickable text - doubled size */
+.read-more {
+    color: purple;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.read-more:hover {
+    color: darkviolet;
+}
+
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-container {
+    margin-top: 20px;
+}
+
+.quiz-item {
+    margin-bottom: 20px;
+}
+
+.quiz-item button {
+    margin-top: 10px;
+}
