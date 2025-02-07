@@ -1,10 +1,23 @@
+<mat-card-header class="page-header">
 <div class="header-container">
   <h1 class="discover-heading">Discover Your Next Read</h1>
 </div>
+</mat-card-header>
+<main>
+<mat-card class="feedback-container">
+    <h2>Help Us Personalise Your Feed</h2>
+    <p>What type of articles do you enjoy?</p>
+    <div class="feedback-options">
+      <button mat-button (click)="logFeedback('Technology')">Technology</button>
+      <button mat-button (click)="logFeedback('Business')">Business</button>
+      <button mat-button (click)="logFeedback('Science')">Science</button>
+      <button mat-button (click)="logFeedback('Entertainment')">Entertainment</button>
+    </div>
+  </mat-card>
 <mat-sidenav-container class="container">
   <!-- Main Content (Article Feed) -->
   <mat-sidenav-content class="feed-container">
-    <!-- <h1>Discover Your Next Read</h1> -->
+     <h3>Personalised Articles</h3>
   
   <mat-card *ngFor="let article of articles" (click)="viewArticle(article)">
     <mat-card-header>
@@ -19,16 +32,6 @@
     </mat-card-actions>
   </mat-card>
 
- <div class="feedback-container">
-    <h2>Help Us Personalise Your Feed</h2>
-    <p>What type of articles do you enjoy?</p>
-    <div class="feedback-options">
-      <button mat-button (click)="logFeedback('Technology')">Technology</button>
-      <button mat-button (click)="logFeedback('Business')">Business</button>
-      <button mat-button (click)="logFeedback('Science')">Science</button>
-      <button mat-button (click)="logFeedback('Entertainment')">Entertainment</button>
-    </div>
-  </div>
   </mat-sidenav-content>
 
     <!-- Sidebar (Quizzes) -->
@@ -49,6 +52,7 @@
     </div>
   </mat-sidenav>
 </mat-sidenav-container>
+</main>
 
   
 <!-- Sidebar for quizzes
