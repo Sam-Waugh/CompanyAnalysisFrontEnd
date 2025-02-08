@@ -7,6 +7,14 @@ import { ChatbotPerplexityService } from '../services/chatbot/chatbot-perplexity
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { jsPDF } from 'jspdf';
 
+export interface Report {
+  llm_response: {
+    title: string;
+    excerpt: string;
+    full_article: string;
+  };
+}
+
 
 @Component({
     selector: 'app-chatbot',
@@ -28,12 +36,12 @@ export class ChatbotComponent {
   sessionId: string = '';
   chatHistory: { question: string, answer: string }[] = [];
   isCompleted: boolean = false;
-  finalResponse: { llm_response: string; relevant_documents: { content: string }[] } | null = null; 
   isLoading: boolean = false;
   errorMessage: string = '';
   isFeedbackStage: boolean = false;
   feedback: string = '';
   selectedFormat: string = 'txt'; // Default to .txt format
+  finalResponse: Report | null = null;
 
   constructor(private chatbotService: ChatbotService) {
     this.startChat();
@@ -73,8 +81,7 @@ export class ChatbotComponent {
         } else if (res.status === 'complete') {
           this.isCompleted = true;
           this.finalResponse = {
-            llm_response: res.result.llm_response || 'No response available',
-            relevant_documents: res.result.relevant_documents || [],
+            llm_response: res.llm_response || { title: '', excerpt: '', full_article: '' },
           };
           this.isFeedbackStage = true;
           this.currentQuestion = "Did this report meet your expectations? Provide feedback:";
@@ -122,10 +129,14 @@ export class ChatbotComponent {
   }
   
   downloadReport(): void {
-    const articleContent = this.finalResponse?.llm_response || 'No content available';
+    const articleTitle = this.finalResponse?.llm_response?.title || 'No content available';
+    const articleExcerpt = this.finalResponse?.llm_response?.excerpt || 'No content available';
+    const articleContent = this.finalResponse?.llm_response?.full_article || 'No content available';
+    const combinedText = `${articleTitle}\n\n${articleExcerpt}\n\n${articleContent}`;
+
     const blob: Blob = this.selectedFormat === 'txt'
-      ? new Blob([articleContent], { type: 'text/plain' })
-      : this.createPdfBlob(articleContent);
+      ? new Blob([combinedText], { type: 'text/plain' })
+      : this.createPdfBlob(articleTitle, articleExcerpt, articleContent);
 
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -134,9 +145,21 @@ export class ChatbotComponent {
   }
 
   // Helper function to create a PDF Blob from content
-  createPdfBlob(content: string): Blob {
+  createPdfBlob(title: string, excerpt: string, content: string): Blob {
     const pdfDoc = new jsPDF();
-    pdfDoc.text(content, 10, 10); // Starting point (x, y) in PDF
+    pdfDoc.setFontSize(18);
+    pdfDoc.text(title, 10, 20);
+
+    // Add the excerpt with a medium font size
+    pdfDoc.setFontSize(14);
+    pdfDoc.text(excerpt, 10, 40);
+
+    // Add the full article content with a normal font size.
+    // splitTextToSize handles long text wrapping automatically.
+    pdfDoc.setFontSize(12);
+    const splitContent = pdfDoc.splitTextToSize(content, 180); // Adjust the width as needed
+    pdfDoc.text(splitContent, 10, 60);
+    //pdfDoc.text(content, 10, 10); // Starting point (x, y) in PDF
     return pdfDoc.output('blob');
   }
 
