@@ -81,7 +81,7 @@ export class ChatbotComponent {
         } else if (res.status === 'complete') {
           this.isCompleted = true;
           this.finalResponse = {
-            llm_response: res.llm_response || { title: '', excerpt: '', full_article: '' },
+            llm_response: res.result.llm_response || { title: '', excerpt: '', full_article: '' },
           };
           this.isFeedbackStage = true;
           this.currentQuestion = "Did this report meet your expectations? Provide feedback:";
