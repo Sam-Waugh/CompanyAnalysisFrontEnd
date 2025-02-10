@@ -1,4 +1,5 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
@@ -7,8 +8,12 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
+import { ArticlesService } from '../services/articles/articles.service';
+import { ArticleDetailDialogComponent } from '../article-detail-dialog/article-detail-dialog.component';
 
 interface Article {
+  datetime_generated: string,
+  user_id: string;
   title: string;
   excerpt: string;
   content: string;
@@ -31,17 +36,20 @@ interface Quiz {
 export class FrontpageComponent {
   //@ViewChild('quizTemplate') quizTemplate!: TemplateRef<any>;
 
+  //UserId GUID
+  userId = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb"
+
   articles: Article[] = [
-    {
-      title: 'AI and the Future of Business',
-      excerpt: 'How artificial intelligence is shaping industries...',
-      content: 'Full article content here...'
-    },
-    {
-      title: 'The Rise of Quantum Computing',
-      excerpt: 'Exploring the latest breakthroughs in quantum technology...',
-      content: 'Full article content here...'
-    }
+    // {
+    //   title: 'AI and the Future of Business',
+    //   excerpt: 'How artificial intelligence is shaping industries...',
+    //   content: 'Full article content here...'
+    // },
+    // {
+    //   title: 'The Rise of Quantum Computing',
+    //   excerpt: 'Exploring the latest breakthroughs in quantum technology...',
+    //   content: 'Full article content here...'
+    // }
   ];
 
   quizzes: Quiz[] = [
@@ -62,7 +70,11 @@ export class FrontpageComponent {
     }
   ];
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private articlesService: ArticlesService) {}
+
+  ngOnInit(): void {
+    this.fetchArticles();
+  }
   
   // ngAfterViewInit() {
   //   // You can add checks here to see if the template is properly initialized
@@ -71,12 +83,32 @@ export class FrontpageComponent {
   //   }
   // }
 
+  fetchArticles(): void {
+    this.articlesService.getArticles(this.userId).subscribe({
+      next: (response) => {
+        // Adjust based on the structure of your backend response.
+        // For example, if the response is an object with an "articles" array:
+        this.articles = response.articles || response;
+      },
+      error: (err: string) => {
+        console.error('Error fetching articles:', err);
+      }
+    });
+  }
+
   viewArticle(article: Article) {
     if (!article) {
       console.error('Article is undefined or null!');
       return;
     }
     console.log(`User clicked on article: ${article.title}`);
+    
+    // Open the article in a dialog popup
+    this.dialog.open(ArticleDetailDialogComponent, {
+      width: '65vw',
+      panelClass: 'custom-dialog-container',
+      data: { article: article }
+    });
     // Future: Open article in a dialog and log user interaction
 
     // // After clicking on an article, trigger a quiz to gather feedback

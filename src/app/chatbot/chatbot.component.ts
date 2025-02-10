@@ -33,6 +33,7 @@ export interface Report {
 export class ChatbotComponent {
   userResponse: string = '';
   currentQuestion: string = '';
+  userId: string = '';
   sessionId: string = '';
   chatHistory: { question: string, answer: string }[] = [];
   isCompleted: boolean = false;
@@ -75,6 +76,7 @@ export class ChatbotComponent {
     this.chatbotService.submitChatbotResponse(this.sessionId, response).subscribe({
       next: (res) => {
         this.isLoading = false;
+        this.userId = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb";
         if (res.status === 'in_progress') {
           this.currentQuestion = res.question;
           this.userResponse = '';

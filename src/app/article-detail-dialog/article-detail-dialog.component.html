@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>{{ data.article.title }}</h2>
+<mat-dialog-content style="max-height:80%;">
+  <h4>{{ data.article.excerpt }}</h4>
+  <div [innerHTML]="data.article.full_article"></div>
+  
+  <h3 style="margin-top: 24px; padding-top: 24px; text-align: center; color: black;">Give Your Feedback</h3>
+  
+  <!-- Star Rating -->
+<div style="display: flex; align-items: center; margin-bottom: 36px;">
+    <span style="margin-right: 8px; font-size: 1.5rem">Star Rating:</span>
+    <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+      <mat-icon style="overflow: none; padding-right:10px; height: 100%; width: 100%;"
+        (click)="setStarRating(star)" 
+        style="cursor: pointer; font-size: 32px; margin-bottom: 10px; height: 100%; width: 30px; color: #ffa000;">
+        {{ star <= feedback.starRating ? 'star' : 'star_border' }}
+      </mat-icon>
+    </ng-container>
+  </div>
+  
+  <!-- Emotions -->
+ <div style="margin: 16px 0;">
+    <span style="margin-right: 8px; text-align: left; font-size: 1.5rem;">What did you think?</span>
+    <div style="display: flex;">
+      <button mat-button (click)="setEmotion('love')" [class.selected]="feedback.emotion === 'love'">
+        😍 Love
+      </button>
+      <button mat-button (click)="setEmotion('insightful')" [class.selected]="feedback.emotion === 'insightful'">
+        💡 Insightful
+      </button>
+      <button mat-button (click)="setEmotion('boring')" [class.selected]="feedback.emotion === 'boring'">
+        😒 Boring
+      </button>
+      <button mat-button (click)="setEmotion('rubbish')" [class.selected]="feedback.emotion === 'rubbish'">
+        🤮 Rubbish
+      </button>
+    </div>
+  </div>
+  
+  <!-- Written Feedback -->
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Written Feedback</mat-label>
+    <textarea matInput [(ngModel)]="feedback.comments"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmitFeedback()">Submit Feedback</button>
+</mat-dialog-actions>

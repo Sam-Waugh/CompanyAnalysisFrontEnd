@@ -228,6 +228,10 @@ button:hover {
     overflow-y: auto;
 }
 
+.feed-container .mat-card-title.mat-mdc-card-title {
+    text-align: left;
+}
+
 .mat-drawer-content {
     width: 100%;
     background-color: #257159;
@@ -272,6 +276,12 @@ button:hover {
     margin-bottom: 10px;
     background: rgb(204, 132, 225);
 }
+
+.custom-dialog-container {
+    max-width: 65vw !important;
+    width: 65vw !important;
+}
+
 
 /* Mobile responsiveness */
 @media screen and (max-width: 768px) {

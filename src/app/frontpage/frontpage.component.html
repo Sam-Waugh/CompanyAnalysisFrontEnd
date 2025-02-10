@@ -17,19 +17,19 @@
 <mat-sidenav-container class="container">
   <!-- Main Content (Article Feed) -->
   <mat-sidenav-content class="feed-container">
-     <h3>Personalised Articles</h3>
-  
-  <mat-card *ngFor="let article of articles" (click)="viewArticle(article)">
+    <h3>Personalised Articles</h3>  
+
+  <mat-card *ngFor="let article of articles" (click)="viewArticle(article)" style="cursor: pointer;">
     <mat-card-header>
-      <mat-card-title>{{ article.title }}</mat-card-title>
+        <mat-card-title style="text-align: left;">{{ article.title }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p>{{ article.excerpt }}</p>
     </mat-card-content>
-    <mat-divider></mat-divider>
-    <mat-card-actions>
+    <!-- <mat-divider></mat-divider> -->
+    <!-- <mat-card-actions>
       <button mat-button>Read More</button>
-    </mat-card-actions>
+    </mat-card-actions> -->
   </mat-card>
 
   </mat-sidenav-content>
