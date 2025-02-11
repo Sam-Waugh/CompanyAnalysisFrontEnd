@@ -9,10 +9,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { FeedbackService } from '../services/feedback/feedback.service';
 
 export interface Feedback {
+  documentId: string,
   starRating: number;
-  emotion: string;
+  reaction: string;
   comments: string;
 }
 
@@ -34,24 +36,28 @@ export interface Feedback {
 })
 export class ArticleDetailDialogComponent {
   feedback: Feedback = {
+    documentId: '',
     starRating: 0,
-    emotion: '',
+    reaction: '',
     comments: ''
   };
 
   constructor(
     public dialogRef: MatDialogRef<ArticleDetailDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { article: any }
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { article: any, userId: string, sessionId: string },
+    private feedbackService: FeedbackService
+  ) {
+    this.feedback.documentId = this.data.article.document_id;
+  }
 
   // Sets the star rating based on the clicked star
   setStarRating(star: number): void {
     this.feedback.starRating = star;
   }
 
-  // Sets the emotion
-  setEmotion(emotion: string): void {
-    this.feedback.emotion = emotion;
+  // Sets the emoticon reaction
+  setReaction(reaction: string): void {
+    this.feedback.reaction = reaction;
   }
 
   onCancel(): void {
@@ -59,8 +65,14 @@ export class ArticleDetailDialogComponent {
   }
 
   onSubmitFeedback(): void {
-    // Here you could send the feedback to a service, log it, etc.
-    console.log("Feedback submitted:", this.feedback);
-    this.dialogRef.close(this.feedback);
+    this.feedbackService.sendFeedback(this.feedback, this.data.userId, this.data.sessionId).subscribe(
+      (response: any) => {
+        console.log("Feedback submitted:", response);
+        this.dialogRef.close(this.feedback);
+      },
+      (error: any) => {
+        console.error("Error submitting feedback:", error);
+      }
+    );
   }
 }

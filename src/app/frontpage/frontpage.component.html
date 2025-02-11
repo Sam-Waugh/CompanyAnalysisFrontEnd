@@ -19,7 +19,7 @@
   <mat-sidenav-content class="feed-container">
     <h3>Personalised Articles</h3>  
 
-  <mat-card *ngFor="let article of articles" (click)="viewArticle(article)" style="cursor: pointer;">
+  <mat-card *ngFor="let article of articles" (click)="viewArticle(article, userId, sessionId)" style="cursor: pointer;">
     <mat-card-header>
         <mat-card-title style="text-align: left;">{{ article.title }}</mat-card-title>
     </mat-card-header>
@@ -44,7 +44,11 @@
           <mat-card-title>{{ quiz.question }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <button mat-button *ngFor="let option of quiz.options" (click)="submitQuizAnswer(quiz.question, option)">
+          <button mat-button *ngFor="let option of quiz.options" (click)="submitQuizAnswer({ 
+            quiz_question: quiz.question, 
+            quiz_options: quiz.options.join(', '), 
+            selectedValue: option 
+          }, userId, sessionId)">
             {{ option }}
           </button>
         </mat-card-content>

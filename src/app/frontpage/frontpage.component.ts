@@ -10,8 +10,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { ArticlesService } from '../services/articles/articles.service';
 import { ArticleDetailDialogComponent } from '../article-detail-dialog/article-detail-dialog.component';
+import { FeedbackService } from '../services/feedback/feedback.service';
 
 interface Article {
+  document_id: string,
   datetime_generated: string,
   user_id: string;
   title: string;
@@ -35,10 +37,9 @@ interface Quiz {
 })
 export class FrontpageComponent {
   //@ViewChild('quizTemplate') quizTemplate!: TemplateRef<any>;
-
   //UserId GUID
   userId = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb"
-
+  sessionId = "";
   articles: Article[] = [
     // {
     //   title: 'AI and the Future of Business',
@@ -67,13 +68,19 @@ export class FrontpageComponent {
       id: 3,
       question: 'Choose your ideal vacation destination:',
       options: ['Beach', 'Mountains', 'City Tour', 'Adventure']
+    },
+    {
+      id: 4,
+      question: 'Which Business Trend Matches Your Personality?',
+      options: ['Tech Innovator', 'Strategic Thinker', 'Risk-Taker']
     }
   ];
 
-  constructor(private dialog: MatDialog, private articlesService: ArticlesService) {}
+  constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService) {}
 
   ngOnInit(): void {
     this.fetchArticles();
+    this.sessionId = this.generateSessionId();
   }
   
   // ngAfterViewInit() {
@@ -96,7 +103,7 @@ export class FrontpageComponent {
     });
   }
 
-  viewArticle(article: Article) {
+  viewArticle(article: Article, userId: string, sessionId: string) {
     if (!article) {
       console.error('Article is undefined or null!');
       return;
@@ -107,12 +114,16 @@ export class FrontpageComponent {
     this.dialog.open(ArticleDetailDialogComponent, {
       width: '65vw',
       panelClass: 'custom-dialog-container',
-      data: { article: article }
+      data: { article: article, userId: userId, sessionId: sessionId }
     });
     // Future: Open article in a dialog and log user interaction
 
     // // After clicking on an article, trigger a quiz to gather feedback
     // this.openQuiz();
+  }
+
+  generateSessionId(): string {
+    return Math.random().toString(36).substring(2, 11); // Simple session ID generation
   }
 
   logFeedback(category: string) {
@@ -129,9 +140,9 @@ export class FrontpageComponent {
   //   });
   // }
 
-  submitQuizAnswer(question: string, answer: string) {
-    console.log(`User answered quiz ${question} with: ${answer}`);
-    // You can send the quiz answer to the backend or process it here
+  submitQuizAnswer(quiz: { quiz_question: string, quiz_options: string, selectedValue: string }, user_id: string, session_id: string) {
+    console.log(`User answered quiz ${quiz.quiz_question} with: ${quiz.selectedValue}`);
+    this.feedbackService.sendQuizFeedback(quiz, user_id, session_id);
   }
   
 }

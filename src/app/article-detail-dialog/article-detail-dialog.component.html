@@ -17,20 +17,20 @@
     </ng-container>
   </div>
   
-  <!-- Emotions -->
+  <!-- Emoticon Reactions -->
  <div style="margin: 16px 0;">
     <span style="margin-right: 8px; text-align: left; font-size: 1.5rem;">What did you think?</span>
     <div style="display: flex;">
-      <button mat-button (click)="setEmotion('love')" [class.selected]="feedback.emotion === 'love'">
+      <button mat-button (click)="setReaction('love')" [class.selected]="feedback.reaction === 'love'">
         😍 Love
       </button>
-      <button mat-button (click)="setEmotion('insightful')" [class.selected]="feedback.emotion === 'insightful'">
+      <button mat-button (click)="setReaction('insightful')" [class.selected]="feedback.reaction === 'insightful'">
         💡 Insightful
       </button>
-      <button mat-button (click)="setEmotion('boring')" [class.selected]="feedback.emotion === 'boring'">
+      <button mat-button (click)="setReaction('boring')" [class.selected]="feedback.reaction === 'boring'">
         😒 Boring
       </button>
-      <button mat-button (click)="setEmotion('rubbish')" [class.selected]="feedback.emotion === 'rubbish'">
+      <button mat-button (click)="setReaction('rubbish')" [class.selected]="feedback.reaction === 'rubbish'">
         🤮 Rubbish
       </button>
     </div>
