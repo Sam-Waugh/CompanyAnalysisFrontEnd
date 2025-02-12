@@ -277,6 +277,11 @@ button:hover {
     background: rgb(204, 132, 225);
 }
 
+.mat-mdc-dialog-container {
+    width: auto !important;
+    height: auto !important;
+}
+
 .custom-dialog-container {
     max-width: 65vw !important;
     width: 65vw !important;

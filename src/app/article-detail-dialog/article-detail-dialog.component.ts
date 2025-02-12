@@ -65,14 +65,15 @@ export class ArticleDetailDialogComponent {
   }
 
   onSubmitFeedback(): void {
-    this.feedbackService.sendFeedback(this.feedback, this.data.userId, this.data.sessionId).subscribe(
-      (response: any) => {
+    this.feedbackService.sendFeedback(this.feedback, this.data.userId, this.data.sessionId)
+    .subscribe({
+      next: (response: any) => {
         console.log("Feedback submitted:", response);
         this.dialogRef.close(this.feedback);
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error("Error submitting feedback:", error);
       }
-    );
-  }
+    });
+}
 }

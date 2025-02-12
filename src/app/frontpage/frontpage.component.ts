@@ -142,7 +142,8 @@ export class FrontpageComponent {
 
   submitQuizAnswer(quiz: { quiz_question: string, quiz_options: string, selectedValue: string }, user_id: string, session_id: string) {
     console.log(`User answered quiz ${quiz.quiz_question} with: ${quiz.selectedValue}`);
-    this.feedbackService.sendQuizFeedback(quiz, user_id, session_id);
+    let feedback = { quiz };
+    this.feedbackService.sendFeedback(feedback, user_id, session_id);
   }
   
 }
