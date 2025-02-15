@@ -12,10 +12,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { FeedbackService } from '../services/feedback/feedback.service';
 
 export interface Feedback {
-  documentId: string,
-  starRating: number;
-  reaction: string;
-  comments: string;
+  documentId?: string;
+  starRating?: number;
+  reaction?: string;
+  comments?: string;
+  quiz?: {
+    quiz_question: string;
+    quiz_options: string;
+    selected_value: string;
+  };
 }
 
 @Component({
@@ -39,7 +44,7 @@ export class ArticleDetailDialogComponent {
     documentId: '',
     starRating: 0,
     reaction: '',
-    comments: ''
+    comments: '',
   };
 
   constructor(

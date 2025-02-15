@@ -12,7 +12,7 @@
       <mat-icon style="overflow: none; padding-right:10px; height: 100%; width: 100%;"
         (click)="setStarRating(star)" 
         style="cursor: pointer; font-size: 32px; margin-bottom: 10px; height: 100%; width: 30px; color: #ffa000;">
-        {{ star <= feedback.starRating ? 'star' : 'star_border' }}
+        {{ star <= (feedback.starRating ?? 0) ? 'star' : 'star_border' }}
       </mat-icon>
     </ng-container>
   </div>

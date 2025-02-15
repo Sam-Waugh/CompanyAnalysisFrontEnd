@@ -41,7 +41,7 @@ export class FeedbackService {
     return this.http.post(this.submitFeedbackEndpoint, payload);
   }
 
-  sendFeedback(feedback: { documentId?: string, starRating?: number; reaction?: string; comments?: string, quiz?: { quiz_question: string, quiz_options: string, selectedValue: string } }, user_id: string, session_id: string): Observable<any> {
+  sendFeedback(feedback: { documentId?: string, starRating?: number; reaction?: string; comments?: string, quiz?: { quiz_question: string, quiz_options: string, selected_value: string } }, user_id: string, session_id: string): Observable<any> {
     const payload: FeedbackPayload = {
       user_id: user_id,
       session_id: session_id,
@@ -65,7 +65,7 @@ export class FeedbackService {
     payload.feedback.quiz = {
       quiz_question: feedback.quiz.quiz_question,
       quiz_options: feedback.quiz.quiz_options,
-      quiz_result: feedback.quiz.selectedValue
+      quiz_result: feedback.quiz.selected_value
     };
   }
   return this.http.post(this.submitFeedbackEndpoint, payload, {
@@ -76,11 +76,11 @@ export class FeedbackService {
   });
   }
 
-  sendQuizFeedback(quiz: { quiz_question: string, quiz_options: string, selectedValue: string }, user_id: string, session_id: string): Observable<any> {
+  sendQuizFeedback(quiz: { quiz_question: string, quiz_options: string, selected_value: string }, user_id: string, session_id: string): Observable<any> {
     const payload: FeedbackPayload = {
       user_id: user_id,
       session_id: session_id,
-      feedback: { quiz: { quiz_question: quiz.quiz_question, quiz_options: quiz.quiz_options, quiz_result: quiz.selectedValue } }
+      feedback: { quiz: { quiz_question: quiz.quiz_question, quiz_options: quiz.quiz_options, quiz_result: quiz.selected_value } }
     };
     const headers = new HttpHeaders({ "Content-Type": "application/json" });
     return this.http.post(this.submitFeedbackEndpoint, payload, { headers });

@@ -41,13 +41,13 @@
      <div *ngFor="let quiz of quizzes">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>{{ quiz.question }}</mat-card-title>
+          <mat-card-title>{{ feedback.quiz?.quiz_question }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <button mat-button *ngFor="let option of quiz.options" (click)="submitQuizAnswer({ 
             quiz_question: quiz.question, 
             quiz_options: quiz.options.join(', '), 
-            selectedValue: option 
+            selected_value: option 
           }, userId, sessionId)">
             {{ option }}
           </button>

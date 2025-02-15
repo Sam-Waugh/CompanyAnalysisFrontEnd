@@ -9,7 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { ArticlesService } from '../services/articles/articles.service';
-import { ArticleDetailDialogComponent } from '../article-detail-dialog/article-detail-dialog.component';
+import { ArticleDetailDialogComponent, Feedback } from '../article-detail-dialog/article-detail-dialog.component';
 import { FeedbackService } from '../services/feedback/feedback.service';
 
 interface Article {
@@ -76,6 +76,14 @@ export class FrontpageComponent {
     }
   ];
 
+  feedback: Feedback = {  
+    quiz: {
+      quiz_question: '',
+      quiz_options: '',
+      selected_value: ''
+    }
+  }
+
   constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService) {}
 
   ngOnInit(): void {
@@ -140,10 +148,22 @@ export class FrontpageComponent {
   //   });
   // }
 
-  submitQuizAnswer(quiz: { quiz_question: string, quiz_options: string, selectedValue: string }, user_id: string, session_id: string) {
-    console.log(`User answered quiz ${quiz.quiz_question} with: ${quiz.selectedValue}`);
-    let feedback = { quiz };
-    this.feedbackService.sendFeedback(feedback, user_id, session_id);
+  submitQuizAnswer(quiz: { quiz_question: string, quiz_options: string, selected_value: string }, user_id: string, session_id: string): void {
+    this.feedback.quiz = quiz;
+    this.feedbackService.sendFeedback(this.feedback, this.userId, this.sessionId)
+      .subscribe({
+        next: (response: any) => {
+          console.log("Quiz feedback submitted:", response);
+        },
+        error: (error: any) => {
+          console.error("Error submitting quiz feedback:", error);
+        }
+      });
+      
+  //     quiz: { quiz_question: string, quiz_options: string, selectedValue: string }, user_id: string, session_id: string) {
+  //   console.log(`User answered quiz ${quiz.quiz_question} with: ${quiz.selectedValue}`);
+  //   let feedback = { quiz };
+  //   this.feedbackService.sendFeedback(feedback, user_id, session_id);
+  // }
   }
-  
 }
