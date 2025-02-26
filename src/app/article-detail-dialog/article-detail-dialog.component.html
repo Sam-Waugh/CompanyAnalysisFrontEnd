@@ -1,10 +1,29 @@
 <h2 mat-dialog-title>{{ data.article.title }}</h2>
 <mat-dialog-content style="max-height:80%;">
   <h4>{{ data.article.excerpt }}</h4>
-  <div [innerHTML]="data.article.full_article"></div>
+
+  <!-- Full Article: string or object -->
+  <div *ngIf="isString(data.article.full_article); else objectArticle">
+    <div [innerHTML]="data.article.full_article"></div>
+  </div>
+  <ng-template #objectArticle>
+    <div *ngFor="let section of data.article.full_article | keyvalue">
+      <h3 style="margin-top: 24px;">{{ formatKey(section.key) | titlecase }}</h3>
+      <!-- If section.value has a "text" property, use it; otherwise, display the value directly -->
+      <div [innerHTML]="getSectionContent(section.value)"></div>
+    </div>
+  </ng-template>
+
+  <!-- Personal Explanation -->
+  <div style="margin-top: 24px; padding-top: 24px;">
+    <h3 style="text-align: center; color: black;">Personal Explanation</h3>
+    <p>{{ data.article.personal_explanation }}</p>
+  </div>
   
   <h3 style="margin-top: 24px; padding-top: 24px; text-align: center; color: black;">Give Your Feedback</h3>
   
+  <!-- Feedback Section -->
+
   <!-- Star Rating -->
 <div style="display: flex; align-items: center; margin-bottom: 36px;">
     <span style="margin-right: 8px; font-size: 1.5rem">Star Rating:</span>

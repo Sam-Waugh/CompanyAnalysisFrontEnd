@@ -55,6 +55,22 @@ export class ArticleDetailDialogComponent {
     this.feedback.documentId = this.data.article.document_id;
   }
 
+  isString(value: any): boolean {
+  return typeof value === 'string';
+  }
+
+  formatKey(key: unknown): string {
+  return key !== null && key !== undefined ? String(key) : '';
+  }
+
+  getSectionContent(value: unknown): string {
+  if (value && typeof value === 'object' && 'text' in value) {
+    // TypeScript now knows value is an object with a text property
+    return (value as { text: string }).text;
+  }
+  return value !== null && value !== undefined ? String(value) : '';
+}
+
   // Sets the star rating based on the clicked star
   setStarRating(star: number): void {
     this.feedback.starRating = star;
