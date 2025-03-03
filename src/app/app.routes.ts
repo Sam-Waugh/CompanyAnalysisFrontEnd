@@ -6,7 +6,7 @@ import { QuestionFormComponent } from './question-form/question-form.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/chatbot', pathMatch: 'full' }, // Default route
+    { path: '', redirectTo: '/frontpage', pathMatch: 'full' }, // Default route
     //{ path: '', component: AppComponent, title: 'Home Page'}, // Default route
     { path: 'chatbot', component: ChatbotComponent, title: 'Chatbot' },  // Chatbot route
     { path: 'frontpage', component: FrontpageComponent, title: 'Frontpage' },  // Chatbot route

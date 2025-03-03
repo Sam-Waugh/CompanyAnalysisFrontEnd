@@ -11,6 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ArticlesService } from '../services/articles/articles.service';
 import { ArticleDetailDialogComponent, Feedback } from '../article-detail-dialog/article-detail-dialog.component';
 import { FeedbackService } from '../services/feedback/feedback.service';
+import { QuizzesService } from '../services/quizzes/quizzes.service';
 
 interface Article {
   document_id: string,
@@ -54,26 +55,26 @@ export class FrontpageComponent {
   ];
 
   quizzes: Quiz[] = [
-    {
-      id: 1,
-      question: 'What superhero would you be?',
-      options: ['Iron Man', 'Spider-Man', 'Wonder Woman', 'Thor']
-    },
-    {
-      id: 2,
-      question: 'What type of movies do you prefer?',
-      options: ['Action', 'Comedy', 'Drama', 'Sci-Fi']
-    },
-    {
-      id: 3,
-      question: 'Choose your ideal vacation destination:',
-      options: ['Beach', 'Mountains', 'City Tour', 'Adventure']
-    },
-    {
-      id: 4,
-      question: 'Which Business Trend Matches Your Personality?',
-      options: ['Tech Innovator', 'Strategic Thinker', 'Risk-Taker']
-    }
+    // {
+    //   id: 1,
+    //   question: 'What superhero would you be?',
+    //   options: ['Iron Man', 'Spider-Man', 'Wonder Woman', 'Thor']
+    // },
+    // {
+    //   id: 2,
+    //   question: 'What type of movies do you prefer?',
+    //   options: ['Action', 'Comedy', 'Drama', 'Sci-Fi']
+    // },
+    // {
+    //   id: 3,
+    //   question: 'Choose your ideal vacation destination:',
+    //   options: ['Beach', 'Mountains', 'City Tour', 'Adventure']
+    // },
+    // {
+    //   id: 4,
+    //   question: 'Which Business Trend Matches Your Personality?',
+    //   options: ['Tech Innovator', 'Strategic Thinker', 'Risk-Taker']
+    // }
   ];
 
   feedback: Feedback = {  
@@ -84,10 +85,11 @@ export class FrontpageComponent {
     }
   }
 
-  constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService) {}
+  constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService, private quizzesService: QuizzesService) {}
 
   ngOnInit(): void {
     this.fetchArticles();
+    this.fetchQuizzes();
     this.sessionId = this.generateSessionId();
   }
   
@@ -107,6 +109,18 @@ export class FrontpageComponent {
       },
       error: (err: string) => {
         console.error('Error fetching articles:', err);
+      }
+    });
+  }
+
+  fetchQuizzes(): void {
+    this.quizzesService.getQuizzes(this.userId).subscribe({
+      next: (quizzes: Quiz[]) => {
+        this.quizzes = quizzes;
+        console.log('Fetched quizzes:', this.quizzes);
+      },
+      error: (err: string) => {
+        console.error('Error fetching quizzes:', err);
       }
     });
   }

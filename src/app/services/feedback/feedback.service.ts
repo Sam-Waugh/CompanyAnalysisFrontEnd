@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 export interface FeedbackPayload {
   user_id: string;
   session_id: string;
+  feedback_date?: Date;
   feedback: {
     document_id?: string,
     ratings?: number;
@@ -27,6 +29,7 @@ export class FeedbackService {
     const payload: FeedbackPayload = {
       user_id: user_id,
       session_id: session_id,
+      feedback_date:  new Date(), 
       feedback: { document_id: feedback.documentId, ratings: feedback.score }
     };
     return this.http.post(this.submitFeedbackEndpoint, payload);
@@ -36,6 +39,7 @@ export class FeedbackService {
     const payload: FeedbackPayload = {
       user_id: user_id,
       session_id: session_id,
+      feedback_date:  new Date(),
       feedback: { document_id: feedback.documentId, reactions: feedback.reaction }
     };
     return this.http.post(this.submitFeedbackEndpoint, payload);
@@ -45,6 +49,7 @@ export class FeedbackService {
     const payload: FeedbackPayload = {
       user_id: user_id,
       session_id: session_id,
+      feedback_date: new Date(), 
       feedback: {
         // document_id: feedback.documentId,
         // ratings: feedback.starRating,
@@ -80,6 +85,7 @@ export class FeedbackService {
     const payload: FeedbackPayload = {
       user_id: user_id,
       session_id: session_id,
+      feedback_date:  new Date(), 
       feedback: { quiz: { quiz_question: quiz.quiz_question, quiz_options: quiz.quiz_options, quiz_result: quiz.selected_value } }
     };
     const headers = new HttpHeaders({ "Content-Type": "application/json" });
