@@ -48,9 +48,10 @@ export class ChatbotService {
    * @param userResponse - The user's response to the current chatbot question.
    * @returns Observable<any> - The backend's response.
    */
-  submitChatbotResponse(sessionId: string, userResponse: string | null): Observable<any> {
+  submitChatbotResponse(sessionId: string, userId: string, userResponse: string | null): Observable<any> {
     const payload = {
       session_id: sessionId,
+      user_id: userId,
       user_response: userResponse,
     };
 
@@ -71,9 +72,9 @@ export class ChatbotService {
    * @param sessionId - Unique session identifier for the user.
    * @returns Observable<any> - The backend's response with the next question.
    */
-  getNextQuestion(sessionId: string, userResponse: string = ''): Observable<any> {
+  getNextQuestion(sessionId: string, userId: string, userResponse: string = ''): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const requestBody = { session_id: sessionId, user_response: userResponse };
+    const requestBody = { session_id: sessionId, user_id: userId, user_response: userResponse };
 
     return this.http.post<any>(`${this.chatbotEndpoint}`, requestBody, { headers }).pipe(
       tap(response => console.log('Next question response:', response)),
@@ -101,9 +102,10 @@ export class ChatbotService {
    * @param feedback - User feedback on the chatbot's response or generated content.
    * @returns Observable<any> - The backend's response.
    */
-  submitUserFeedback(sessionId: string, feedback: string): Observable<any> {
+  submitUserFeedback(sessionId: string, userId: string, feedback: string): Observable<any> {
     const payload = {
       session_id: sessionId,
+      user_id: userId,
       feedback: feedback,
     };
 

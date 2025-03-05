@@ -33,7 +33,7 @@ export interface Report {
 export class ChatbotComponent {
   userResponse: string = '';
   currentQuestion: string = '';
-  userId: string = '';
+  userId: string = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb";
   sessionId: string = '';
   chatHistory: { question: string, answer: string }[] = [];
   isCompleted: boolean = false;
@@ -52,7 +52,7 @@ export class ChatbotComponent {
     this.sessionId = this.generateSessionId();
     this.isLoading = true; // Indicate loading while chatbot fetches the first question
 
-    this.chatbotService.getNextQuestion(this.sessionId).subscribe({
+    this.chatbotService.getNextQuestion(this.sessionId, this.userId).subscribe({
       next: (res) => {
         this.currentQuestion = res.question; // Set the first question
         this.isLoading = false;
@@ -73,10 +73,9 @@ export class ChatbotComponent {
     if (!response.trim()) return;
     this.isLoading = true;
     this.chatHistory.push({ question: this.currentQuestion, answer: response });
-    this.chatbotService.submitChatbotResponse(this.sessionId, response).subscribe({
+    this.chatbotService.submitChatbotResponse(this.sessionId, this.userId, response).subscribe({
       next: (res) => {
         this.isLoading = false;
-        this.userId = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb";
         if (res.status === 'in_progress') {
           this.currentQuestion = res.question;
           this.userResponse = '';
@@ -104,7 +103,7 @@ export class ChatbotComponent {
     if (!this.feedback.trim()) return;
 
     this.isLoading = true;
-    this.chatbotService.submitUserFeedback(this.sessionId, this.feedback).subscribe({
+    this.chatbotService.submitUserFeedback(this.sessionId, this.userId, this.feedback).subscribe({
       next: () => {
         this.isLoading = false;
         alert('Thank you for your feedback!');
