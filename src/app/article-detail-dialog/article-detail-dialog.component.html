@@ -1,10 +1,17 @@
-<h2 mat-dialog-title>{{ data.article.title }}</h2>
+<h2 mat-dialog-title class="article-title">{{ data.article.title }}</h2>
 <mat-dialog-content style="max-height:80%;">
-  <h4>{{ data.article.excerpt }}</h4>
+    <!-- Article Image -->
+  <div class="article-image-container">
+    <img
+      [src]="data.article.article_image"
+      [alt]="data.article.title"
+      class="article-image"
+    />
+  </div>
 
   <!-- Full Article: string or object -->
-  <div *ngIf="isString(data.article.full_article); else objectArticle">
-    <div [innerHTML]="data.article.full_article"></div>
+  <div class="full-article" *ngIf="isString(data.article.full_article); else objectArticle">
+    <div [innerHTML]="removeTitleTags(data.article.full_article)"></div>
   </div>
   <ng-template #objectArticle>
     <div *ngFor="let section of data.article.full_article | keyvalue">
@@ -15,17 +22,18 @@
   </ng-template>
 
   <!-- Personal Explanation -->
-  <div style="margin-top: 24px; padding-top: 24px;">
+  <div style="margin-top: 24px; margin-bottom: 24px; padding-top: 24px; padding-bottom: 24px;">
     <h3 style="text-align: center; color: black;">Personal Explanation</h3>
-    <p>{{ data.article.personal_explanation }}</p>
+    <p style="line-height: 1.6; font-size: 1.2rem; color: #000;">
+      {{ data.article.personal_explanation }}
+    </p>
   </div>
   
-  <h3 style="margin-top: 24px; padding-top: 24px; text-align: center; color: black;">Give Your Feedback</h3>
-  
   <!-- Feedback Section -->
+  <h3 style="margin-top: 24px; padding-top: 24px; text-align: center; color: black;">Give Your Feedback</h3>
 
   <!-- Star Rating -->
-<div style="display: flex; align-items: center; margin-bottom: 36px;">
+  <div style="display: flex; align-items: center; margin-bottom: 36px;">
     <span style="margin-right: 8px; font-size: 1.5rem">Star Rating:</span>
     <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
       <mat-icon style="overflow: none; padding-right:10px; height: 100%; width: 100%;"
@@ -38,7 +46,6 @@
   
   <!-- Emoticon Reactions -->
  <div style="margin: 16px 0;">
-    <span style="margin-right: 8px; text-align: left; font-size: 1.5rem;">What did you think?</span>
     <div style="display: flex;">
       <button mat-button (click)="setReaction('love')" [class.selected]="feedback.reaction === 'love'">
         😍 Love

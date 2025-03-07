@@ -69,7 +69,12 @@ export class ArticleDetailDialogComponent {
     return (value as { text: string }).text;
   }
   return value !== null && value !== undefined ? String(value) : '';
-}
+  }
+  
+  removeTitleTags(html: string): string {
+  // Use a regex to remove the <title> element and its content
+  return html.replace(/<title[^>]*>[\s\S]*?<\/title>/gi, '');
+  }
 
   // Sets the star rating based on the clicked star
   setStarRating(star: number): void {

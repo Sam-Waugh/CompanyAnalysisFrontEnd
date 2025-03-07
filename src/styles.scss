@@ -287,6 +287,73 @@ button:hover {
     width: 65vw !important;
 }
 
+/* Enhance Article Title Font Size */
+.mat-mdc-dialog-container .mat-mdc-dialog-title.article-title {
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 24px;
+    margin: 24px;
+}
+
+/* Dynamic Image Container */
+.article-image-container {
+    max-width: 100%;
+    margin-bottom: 16px auto;
+    text-align: center;
+}
+
+.article-image {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Full Article Styling */
+.full-article {
+    font-size: 1.2rem;
+    color: #000;
+    line-height: 1.5;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+/* Override any inline styles for headers coming through in full_article */
+.full-article h1 {
+    font-size: 2rem;
+    color: #000 !important;
+    line-height: 1.5;
+}
+
+.full-article h2 {
+    font-size: 1.8rem;
+    color: #000 !important;
+    line-height: 1.5;
+}
+
+.full-article h3 {
+    font-size: 1.6rem;
+    color: #000 !important;
+    line-height: 1.5;
+}
+
+.full-article p {
+    font-size: 1.2rem;
+    color: #000 !important;
+    line-height: 1.5;
+}
+
+.excerpt {
+    font-size: 1.3rem;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Hide the duplicate title from the full article content */
+.full-article h1:first-of-type {
+    display: none;
+}
 
 /* Mobile responsiveness */
 @media screen and (max-width: 768px) {
