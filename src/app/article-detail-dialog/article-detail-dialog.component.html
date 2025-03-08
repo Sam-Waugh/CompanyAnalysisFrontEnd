@@ -21,6 +21,17 @@
     </div>
   </ng-template>
 
+  <!-- Author Info -->
+  <div class="author-info" style="display: flex; align-items: center; margin-bottom: 16px;">
+    <img
+      [src]="data.article.author_photo_path"
+      [alt]="data.article.author_name"
+      class="author-photo"
+      style="width: 150px; height: 150px; border-radius: 50%; margin-right: 20px;"
+    />
+    <span class="author-name" style="font-weight: bold; font-size: 1.5rem;">Author: {{ data.article.author_name }}</span>
+  </div>
+
   <!-- Personal Explanation -->
   <div style="margin-top: 24px; margin-bottom: 24px; padding-top: 24px; padding-bottom: 24px;">
     <h3 style="text-align: center; color: black;">Personal Explanation</h3>

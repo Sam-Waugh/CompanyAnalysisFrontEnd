@@ -14,12 +14,18 @@ import { FeedbackService } from '../services/feedback/feedback.service';
 import { QuizzesService } from '../services/quizzes/quizzes.service';
 
 interface Article {
-  document_id: string,
-  datetime_generated: string,
+  document_id: string;
   user_id: string;
+  datetime_generated: string;
   title: string;
   excerpt: string;
-  content: string;
+  full_article: string;
+  article_image: string;
+  personal_explanation: string;
+  keywords: string;
+  prompt_programme_id: string;
+  author_name: string;
+  author_photo_path: string;
 }
 
 interface Quiz {

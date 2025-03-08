@@ -20,8 +20,17 @@
     <h3>Personalised Articles</h3>  
 
   <mat-card *ngFor="let article of articles" (click)="viewArticle(article, userId, sessionId)" style="cursor: pointer;">
-    <mat-card-header>
-        <mat-card-title style="text-align: left;">{{ article.title }}</mat-card-title>
+    <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
+      <!-- Left: Article title -->
+        <div>
+          <mat-card-title style="text-align: left; font-size: 70%; font-weight: bold;">{{ article.title }}</mat-card-title>
+        </div>
+         <!-- Right: Author info -->
+        <div style="display: flex; align-items: center;">
+          <img *ngIf="article.author_photo_path" [src]="article.author_photo_path" [alt]="article.author_name" 
+               style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; margin-left: 15px;">
+          <span style="text-align: right; font-size: 40%; font-style: italic;" *ngIf="article.author_name">{{ article.author_name }}</span>
+        </div>
     </mat-card-header>
     <mat-card-content>
       <p>{{ article.excerpt }}</p>
