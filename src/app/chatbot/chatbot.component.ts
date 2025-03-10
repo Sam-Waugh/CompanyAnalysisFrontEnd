@@ -1,5 +1,6 @@
-import { Component, NgModule, ViewEncapsulation  } from '@angular/core';
+import { Component, NgModule, ViewEncapsulation, Inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChatbotService } from '../services/chatbot/chatbot.service';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +15,6 @@ export interface Report {
     full_article: string;
   };
 }
-
 
 @Component({
     selector: 'app-chatbot',
@@ -43,8 +43,10 @@ export class ChatbotComponent {
   feedback: string = '';
   selectedFormat: string = 'txt'; // Default to .txt format
   finalResponse: Report | null = null;
+  prompt: string;
 
-  constructor(private chatbotService: ChatbotService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private chatbotService: ChatbotService) {
+    this.prompt = data.prompt || 'ChatBot';
     this.startChat();
   }
 

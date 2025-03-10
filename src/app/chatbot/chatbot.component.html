@@ -1,8 +1,6 @@
 <main class="main">
   <div class="content">
-    <h1>AI Company Analysis</h1>
-    <br />
-    <h2>ChatBot</h2>
+    <h2>{{ prompt }}</h2>
 
     <div class="chatbot-container">
       <!-- Loading Indicator -->
@@ -14,7 +12,8 @@
           <mat-card-header><h3>Chatbot:</h3></mat-card-header>
           <mat-card-content>
             <p>{{ currentQuestion }}</p>
-            <input [(ngModel)]="userResponse" type="text" placeholder="Type your response here" [disabled]="!currentQuestion || isLoading" />
+            <input [(ngModel)]="userResponse" type="text" placeholder="Type your response here" [disabled]="!currentQuestion || isLoading" 
+            style="width: 80%; height: 50px; font-size: 16px; padding: 8px;"/>
           </mat-card-content>
         </mat-card>
         <button (click)="submitResponse(userResponse)" [disabled]="!userResponse.trim()">Submit</button>

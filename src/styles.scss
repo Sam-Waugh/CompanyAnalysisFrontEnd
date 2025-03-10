@@ -125,6 +125,13 @@ mat-card-title {
     color: #333;
     margin-bottom: 12px;
     padding-top: 8px;
+    white-space: normal;
+    min-width: 0;
+    line-height: 1.5;
+}
+
+.mat-mdc-card-title {
+    line-height: 1.15 !important;
 }
 
 mat-card-content {
@@ -147,7 +154,18 @@ mat-card-header.mat-mdc-card-header {
     color: black !important;
 }
 
-/* Button improvements */
+.new-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
 button {
     color: black;
     font-weight: bold;
@@ -157,6 +175,9 @@ button {
     margin-top: 12px;
     transition: background-color 0.3s ease;
     background-color: rgb(104, 237, 67);
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 button.mdc-button {
@@ -167,13 +188,14 @@ button.mdc-button {
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
     margin: 2px;
     color: white;
+    height: fit-content;
+    text-align: left;
 }
 
 button:hover {
     background-color: rgb(104, 237, 67);
 }
 
-/* Feedback Section - More Padding */
 .feedback-container {
     width: 100%;
     background: rgb(204, 132, 225);
@@ -285,6 +307,11 @@ button:hover {
 .custom-dialog-container {
     max-width: 65vw !important;
     width: 65vw !important;
+}
+
+.cdk-overlay-pane.custom-dialog-container {
+    max-width: none !important;
+    width: 50vw !important;
 }
 
 /* Enhance Article Title Font Size */

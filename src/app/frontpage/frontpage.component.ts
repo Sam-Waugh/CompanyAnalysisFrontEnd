@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
+import { MatBadgeModule } from '@angular/material/badge';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -12,11 +13,13 @@ import { ArticlesService } from '../services/articles/articles.service';
 import { ArticleDetailDialogComponent, Feedback } from '../article-detail-dialog/article-detail-dialog.component';
 import { FeedbackService } from '../services/feedback/feedback.service';
 import { QuizzesService } from '../services/quizzes/quizzes.service';
+import { ChatbotComponent } from '../chatbot/chatbot.component';
 
 interface Article {
   document_id: string;
   user_id: string;
   datetime_generated: string;
+  isUnread: boolean;
   title: string;
   excerpt: string;
   full_article: string;
@@ -26,6 +29,7 @@ interface Article {
   prompt_programme_id: string;
   author_name: string;
   author_photo_path: string;
+  author_description: string;
 }
 
 interface Quiz {
@@ -38,7 +42,7 @@ interface Quiz {
   selector: 'app-article-feed',
   standalone: true,
   imports: [MatDialogModule, CommonModule, MatCardModule, MatButtonModule, MatListModule, MatSidenavModule,
-    MatDividerModule ],
+    MatDividerModule, MatBadgeModule],
   templateUrl: './frontpage.component.html',
   styleUrls: ['./frontpage.component.css']
 })
@@ -47,41 +51,9 @@ export class FrontpageComponent {
   //UserId GUID
   userId = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb"
   sessionId = "";
-  articles: Article[] = [
-    // {
-    //   title: 'AI and the Future of Business',
-    //   excerpt: 'How artificial intelligence is shaping industries...',
-    //   content: 'Full article content here...'
-    // },
-    // {
-    //   title: 'The Rise of Quantum Computing',
-    //   excerpt: 'Exploring the latest breakthroughs in quantum technology...',
-    //   content: 'Full article content here...'
-    // }
-  ];
+  articles: Article[] = [];
 
-  quizzes: Quiz[] = [
-    // {
-    //   id: 1,
-    //   question: 'What superhero would you be?',
-    //   options: ['Iron Man', 'Spider-Man', 'Wonder Woman', 'Thor']
-    // },
-    // {
-    //   id: 2,
-    //   question: 'What type of movies do you prefer?',
-    //   options: ['Action', 'Comedy', 'Drama', 'Sci-Fi']
-    // },
-    // {
-    //   id: 3,
-    //   question: 'Choose your ideal vacation destination:',
-    //   options: ['Beach', 'Mountains', 'City Tour', 'Adventure']
-    // },
-    // {
-    //   id: 4,
-    //   question: 'Which Business Trend Matches Your Personality?',
-    //   options: ['Tech Innovator', 'Strategic Thinker', 'Risk-Taker']
-    // }
-  ];
+  quizzes: Quiz[] = [];
 
   feedback: Feedback = {  
     quiz: {
@@ -91,27 +63,22 @@ export class FrontpageComponent {
     }
   }
 
-  constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService, private quizzesService: QuizzesService) {}
+  constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService, private quizzesService: QuizzesService) { }
 
   ngOnInit(): void {
     this.fetchArticles();
     this.fetchQuizzes();
     this.sessionId = this.generateSessionId();
   }
-  
-  // ngAfterViewInit() {
-  //   // You can add checks here to see if the template is properly initialized
-  //   if (!this.quizTemplate) {
-  //     console.error('Quiz template is not defined.');
-  //   }
-  // }
 
   fetchArticles(): void {
     this.articlesService.getArticles(this.userId).subscribe({
       next: (response) => {
-        // Adjust based on the structure of your backend response.
-        // For example, if the response is an object with an "articles" array:
-        this.articles = response.articles || response;
+        let articles = response.articles || response;
+        // Sort the articles by datetime_generated in descending order (newest first)
+        this.articles = articles.sort((a: Article, b: Article) =>
+        new Date(b.datetime_generated).getTime() - new Date(a.datetime_generated).getTime()
+      );
       },
       error: (err: string) => {
         console.error('Error fetching articles:', err);
@@ -122,7 +89,7 @@ export class FrontpageComponent {
   fetchQuizzes(): void {
     this.quizzesService.getQuizzes(this.userId).subscribe({
       next: (quizzes: Quiz[]) => {
-        this.quizzes = quizzes;
+        this.quizzes = this.shuffleArray(quizzes);
         console.log('Fetched quizzes:', this.quizzes);
       },
       error: (err: string) => {
@@ -137,7 +104,14 @@ export class FrontpageComponent {
       return;
     }
     console.log(`User clicked on article: ${article.title}`);
+
+    article.isUnread = false;
     
+    this.articlesService.markArticleAsRead(article.document_id).subscribe({
+      next: () => console.log("Article marked as read on server"),
+      error: (err) => console.error("Error updating article read status:", err)
+    });
+
     // Open the article in a dialog popup
     this.dialog.open(ArticleDetailDialogComponent, {
       width: '65vw',
@@ -159,15 +133,6 @@ export class FrontpageComponent {
     // Future: Send user preference data to backend for personalised recommendations
   }
 
-  // openQuiz() {
-  //   const dialogRef = this.dialog.open(this.quizTemplate);
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(`User chose superhero: ${result}`);
-  //     // You can send the quiz result to your backend for further analysis
-  //   });
-  // }
-
   submitQuizAnswer(quiz: { quiz_question: string, quiz_options: string, selected_value: string }, user_id: string, session_id: string): void {
     this.feedback.quiz = quiz;
     this.feedbackService.sendFeedback(this.feedback, this.userId, this.sessionId)
@@ -179,11 +144,28 @@ export class FrontpageComponent {
           console.error("Error submitting quiz feedback:", error);
         }
       });
-      
-  //     quiz: { quiz_question: string, quiz_options: string, selectedValue: string }, user_id: string, session_id: string) {
-  //   console.log(`User answered quiz ${quiz.quiz_question} with: ${quiz.selectedValue}`);
-  //   let feedback = { quiz };
-  //   this.feedbackService.sendFeedback(feedback, user_id, session_id);
-  // }
+  }
+
+  shuffleArray(array: Quiz[]): Quiz[] {
+    // Create a copy of the array to avoid modifying the original directly
+    let shuffled = array.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
+  openChatbotModal() {
+    const dialogRef = this.dialog.open(ChatbotComponent, {
+      panelClass: 'custom-dialog-container',
+      data: {
+        prompt: "Can't find any articles to your taste? Chat to us and let us know what you'd like us to write about"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Chatbot modal closed', result);
+    });
   }
 }

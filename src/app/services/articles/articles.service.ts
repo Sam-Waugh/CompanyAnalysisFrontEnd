@@ -8,6 +8,7 @@ import { Observable, catchError, tap, throwError } from 'rxjs';
 export class ArticlesService {
   private baseUrl = 'http://localhost:8000';
   private articlesEndpoint = `${this.baseUrl}/articles`; // Endpoint for article retrieval
+  private articleReadEndpoint = `${this.baseUrl}/articleRead`;
 
   constructor(private http: HttpClient) { }
   
@@ -24,6 +25,12 @@ export class ArticlesService {
       tap(response => console.log('Articles fetched:', response)),
       catchError(this.handleError)
     );
+  }
+
+  markArticleAsRead(documentId: string):  Observable<any> {
+    const url = `${this.articleReadEndpoint}`;
+    // Using PATCH to update the isUnread property to false
+    return this.http.post(url, { document_id: documentId });
   }
     
  /**
