@@ -40,6 +40,8 @@ export interface Feedback {
   styleUrl: './article-detail-dialog.component.scss'
 })
 export class ArticleDetailDialogComponent {
+  article: any;
+  
   feedback: Feedback = {
     documentId: '',
     starRating: 0,
@@ -52,6 +54,7 @@ export class ArticleDetailDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { article: any, userId: string, sessionId: string },
     private feedbackService: FeedbackService
   ) {
+    this.article = data.article;
     this.feedback.documentId = this.data.article.document_id;
   }
 

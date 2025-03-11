@@ -160,12 +160,34 @@ export class FrontpageComponent {
     const dialogRef = this.dialog.open(ChatbotComponent, {
       panelClass: 'custom-dialog-container',
       data: {
-        prompt: "Can't find any articles to your taste? Chat to us and let us know what you'd like us to write about"
+        prompt: "Can't find any articles to your taste? Chat to us and let us know what you'd like us to write about",
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Chatbot modal closed', result);
+    dialogRef.afterClosed().subscribe((article: Article | undefined) => {
+      if (article) {
+
+        article.isUnread = false;
+    
+        this.articlesService.markArticleAsRead(article.document_id).subscribe({
+          next: () => console.log("Article marked as read on server"),
+          error: (err) => console.error("Error updating article read status:", err)
+        });
+        // Open the Article Detail Dialog with the returned article.
+        const articleRef = this.dialog.open(ArticleDetailDialogComponent, {
+          width: '80vw',
+          panelClass: 'custom-dialog-container',
+          data: { article: article, userId: this.userId, sessionId: this.sessionId }
+        });
+        // Once the article detail modal is closed, refresh the articles.
+        articleRef.afterClosed().subscribe(() => {
+          this.fetchArticles();
+        });
+      } else {
+        // If no article was created (or the user canceled), still refresh articles.
+        this.fetchArticles();
+      }
     });
   }
+  
 }

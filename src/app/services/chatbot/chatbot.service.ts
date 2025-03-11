@@ -8,6 +8,7 @@ import { Observable, catchError, map, tap, throwError } from 'rxjs';
 export class ChatbotService {
   private baseUrl = 'http://localhost:8000';
   private chatbotEndpoint = `${this.baseUrl}/chatbot`; // Endpoint for chatbot interactions
+  private authorsEndpoint = `${this.baseUrl}/authors`;
 
   constructor(private http: HttpClient) {}
 
@@ -24,6 +25,15 @@ export class ChatbotService {
   //     })
   //   );
   // }
+
+  getAuthors(): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.get<any>(`${this.authorsEndpoint}`, { headers }).pipe(
+      tap(response => console.log('Authors fetched:', response)),
+      catchError(this.handleError)
+    );
+  }
 
 /**
    * Starts a new chatbot session and fetches the first question.
@@ -48,10 +58,11 @@ export class ChatbotService {
    * @param userResponse - The user's response to the current chatbot question.
    * @returns Observable<any> - The backend's response.
    */
-  submitChatbotResponse(sessionId: string, userId: string, userResponse: string | null): Observable<any> {
+  submitChatbotResponse(sessionId: string, userId: string, selectedAuthorId: string, userResponse: string | null): Observable<any> {
     const payload = {
       session_id: sessionId,
       user_id: userId,
+      selectedAuthorId: selectedAuthorId,
       user_response: userResponse,
     };
 

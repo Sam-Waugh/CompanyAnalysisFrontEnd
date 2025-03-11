@@ -1,19 +1,47 @@
-import { Component, NgModule, ViewEncapsulation, Inject } from '@angular/core';
+import { Component, Optional, ViewEncapsulation, Inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { ChatbotService } from '../services/chatbot/chatbot.service';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatbotPerplexityService } from '../services/chatbot/chatbot-perplexity.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { jsPDF } from 'jspdf';
+import { ArticleDetailDialogComponent } from '../article-detail-dialog/article-detail-dialog.component';
 
-export interface Report {
-  llm_response: {
-    title: string;
-    excerpt: string;
-    full_article: string;
-  };
+
+// export interface Report {
+//   llm_response: {
+//     title: string;
+//     excerpt: string;
+//     full_article: string;
+//   };
+// }
+
+interface Article {
+  document_id: string;
+  user_id: string;
+  datetime_generated: string;
+  isUnread: boolean;
+  title: string;
+  excerpt: string;
+  full_article: string;
+  article_image: string;
+  personal_explanation: string;
+  keywords: string;
+  prompt_programme_id: string;
+  author_name: string;
+  author_photo_path: string;
+  author_description: string;
+}
+
+interface Author {
+  id: string;
+  author_name: string;
+  author_description: string;
+  author_photo_path: string;
 }
 
 @Component({
@@ -21,12 +49,8 @@ export interface Report {
     templateUrl: './chatbot.component.html',
     styleUrls: ['./chatbot.component.css'],
     standalone: true, 
-    imports: [FormsModule, CommonModule, MatCardModule, MatSlideToggleModule],
+    imports: [FormsModule, CommonModule, MatCardModule, MatSlideToggleModule, MatFormFieldModule, MatSelectModule],
     encapsulation: ViewEncapsulation.None,
-    template: `
-      <app-header></app-header>
-      <app-content></app-content>
-    `,
     styles: ``,
 })
   
@@ -42,12 +66,16 @@ export class ChatbotComponent {
   isFeedbackStage: boolean = false;
   feedback: string = '';
   selectedFormat: string = 'txt'; // Default to .txt format
-  finalResponse: Report | null = null;
+  finalResponse: any;
   prompt: string;
+  selectedAuthorId: string = '';
+  authors: Author[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private chatbotService: ChatbotService) {
-    this.prompt = data.prompt || 'ChatBot';
+  constructor(@Optional() public dialogRef: MatDialogRef<ChatbotComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data: any, private chatbotService: ChatbotService, private dialog: MatDialog
+    ) {
+    this.prompt = data?.prompt || 'ChatBot';
     this.startChat();
+    this.getAuthors();
   }
 
   startChat(): void {
@@ -67,6 +95,27 @@ export class ChatbotComponent {
     });
   }
 
+  getAuthors(): void {
+    this.chatbotService.getAuthors().subscribe({
+      next: (response: any) => {
+        console.log('API response:', response);
+        // Adjust based on response structure:
+        if (Array.isArray(response)) {
+          this.authors = response;
+        } else if (response.authors && Array.isArray(response.authors)) {
+          this.authors = response.authors;
+        } else {
+          // Fallback: try converting the object into an array
+          this.authors = Object.values(response);
+        }
+        console.log('Fetched authors:', this.authors);
+      },
+      error: (err: string) => {
+        console.error('Error fetching authors:', err);
+      }
+    });
+  }
+
   /**
   * Handles user responses and submits them to the backend.
   * @param response - User's response to the current question.
@@ -75,7 +124,8 @@ export class ChatbotComponent {
     if (!response.trim()) return;
     this.isLoading = true;
     this.chatHistory.push({ question: this.currentQuestion, answer: response });
-    this.chatbotService.submitChatbotResponse(this.sessionId, this.userId, response).subscribe({
+
+    this.chatbotService.submitChatbotResponse(this.sessionId, this.userId, this.selectedAuthorId, response).subscribe({
       next: (res) => {
         this.isLoading = false;
         if (res.status === 'in_progress') {
@@ -83,11 +133,14 @@ export class ChatbotComponent {
           this.userResponse = '';
         } else if (res.status === 'complete') {
           this.isCompleted = true;
-          this.finalResponse = {
-            llm_response: res.result.llm_response || { title: '', excerpt: '', full_article: '' },
-          };
-          this.isFeedbackStage = true;
-          this.currentQuestion = "Did this report meet your expectations? Provide feedback:";
+          if (this.isCompleted && res.result && res.result.full_article) {
+            this.finishArticleCreation(res.result);
+          }
+          // this.finalResponse = {
+          //   llm_response: res.result.llm_response || { title: '', excerpt: '', full_article: '' },
+          // };
+          // this.isFeedbackStage = true;
+          // this.currentQuestion = "Did this report meet your expectations? Provide feedback:";
         }
       },
       error: (err) => {
@@ -130,41 +183,65 @@ export class ChatbotComponent {
       this.submitResponse(response);
     }
   }
+
+  finishArticleCreation(article: Article): void {
+    // Close the chatbot modal
+    //if (this.dialogRef) {
+    this.dialogRef.close(article);
+
+  //   // Open the article detail dialog and pass the generated article data.
+  //   this.dialogRef.afterClosed().subscribe(() => {
+  //     this.dialog.open(ArticleDetailDialogComponent, {
+  //       width: '80vw', // Adjust width as needed
+  //       panelClass: 'custom-dialog-container',
+  //       data: { article: article, userId: userId, sessionId: sessionId }
+  //     });
+  //   });
+  //   } else {
+  //   // If dialogRef is undefined, open the article detail dialog immediately
+  //   this.dialog.open(ArticleDetailDialogComponent, {
+  //     width: '80vw',
+  //     panelClass: 'custom-dialog-container',
+  //     data: { article: article, userId: userId, sessionId: sessionId }
+  //   });
+  // }
+  }
+
   
-  downloadReport(): void {
-    const articleTitle = this.finalResponse?.llm_response?.title || 'No content available';
-    const articleExcerpt = this.finalResponse?.llm_response?.excerpt || 'No content available';
-    const articleContent = this.finalResponse?.llm_response?.full_article || 'No content available';
-    const combinedText = `${articleTitle}\n\n${articleExcerpt}\n\n${articleContent}`;
+  // downloadReport(): void {
+  //   const articleTitle = this.finalResponse?.llm_response?.title || 'No content available';
+  //   const articleExcerpt = this.finalResponse?.llm_response?.excerpt || 'No content available';
+  //   const articleContent = this.finalResponse?.llm_response?.full_article || 'No content available';
+  //   const combinedText = `${articleTitle}\n\n${articleExcerpt}\n\n${articleContent}`;
 
-    const blob: Blob = this.selectedFormat === 'txt'
-      ? new Blob([combinedText], { type: 'text/plain' })
-      : this.createPdfBlob(articleTitle, articleExcerpt, articleContent);
+  //   const blob: Blob = this.selectedFormat === 'txt'
+  //     ? new Blob([combinedText], { type: 'text/plain' })
+  //     : this.createPdfBlob(articleTitle, articleExcerpt, articleContent);
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = this.selectedFormat === 'txt' ? 'generated_report.txt' : 'generated_report.pdf';
-    link.click();
-  }
+  //   const link = document.createElement('a');
+  //   link.href = URL.createObjectURL(blob);
+  //   link.download = this.selectedFormat === 'txt' ? 'generated_report.txt' : 'generated_report.pdf';
+  //   link.click();
+  // }
 
-  // Helper function to create a PDF Blob from content
-  createPdfBlob(title: string, excerpt: string, content: string): Blob {
-    const pdfDoc = new jsPDF();
-    pdfDoc.setFontSize(18);
-    pdfDoc.text(title, 10, 20);
+  // // Helper function to create a PDF Blob from content
+  // createPdfBlob(title: string, excerpt: string, content: string): Blob {
+  //   const pdfDoc = new jsPDF();
+  //   pdfDoc.setFontSize(18);
+  //   pdfDoc.text(title, 10, 20);
 
-    // Add the excerpt with a medium font size
-    pdfDoc.setFontSize(14);
-    pdfDoc.text(excerpt, 10, 40);
+  //   // Add the excerpt with a medium font size
+  //   pdfDoc.setFontSize(14);
+  //   pdfDoc.text(excerpt, 10, 40);
 
-    // Add the full article content with a normal font size.
-    // splitTextToSize handles long text wrapping automatically.
-    pdfDoc.setFontSize(12);
-    const splitContent = pdfDoc.splitTextToSize(content, 180); // Adjust the width as needed
-    pdfDoc.text(splitContent, 10, 60);
-    //pdfDoc.text(content, 10, 10); // Starting point (x, y) in PDF
-    return pdfDoc.output('blob');
-  }
+  //   // Add the full article content with a normal font size.
+  //   // splitTextToSize handles long text wrapping automatically.
+  //   pdfDoc.setFontSize(12);
+  //   const splitContent = pdfDoc.splitTextToSize(content, 180); // Adjust the width as needed
+  //   pdfDoc.text(splitContent, 10, 60);
+  //   //pdfDoc.text(content, 10, 10); // Starting point (x, y) in PDF
+  //   return pdfDoc.output('blob');
+  // }
 
   // onSubmit() {
   //   this.isLoading = true;

@@ -6,6 +6,29 @@
       <!-- Loading Indicator -->
       <div *ngIf="isLoading" class="loading">Loading...</div>
 
+      <div class="author-selection" style="margin-bottom: 16px;">
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Select Author</mat-label>
+        <mat-select [(ngModel)]="selectedAuthorId">
+          <mat-option *ngFor="let author of authors" [value]="author.id">
+            <div style="display: flex; align-items: center;">
+              <!-- Author photo -->
+              <img [src]="author.author_photo_path" 
+                  alt="{{ author.author_name }}" 
+                  style="width:40px; height:40px; object-fit: cover; margin-right: 12px;">
+              <!-- Text container for name and description -->
+              <div>
+                <!-- Name in bold -->
+                <div style="font-weight: bold;">{{ author.author_name }}</div>
+                <!-- Description left aligned -->
+                <div style="text-align: left;">{{ author.author_description }}</div>
+              </div>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
       <!-- Chatbot Question and User Input -->
       <div *ngIf="!isCompleted && !isLoading">
         <mat-card appearance="outlined">
@@ -17,42 +40,6 @@
           </mat-card-content>
         </mat-card>
         <button (click)="submitResponse(userResponse)" [disabled]="!userResponse.trim()">Submit</button>
-      </div>
-
-      <!-- Generated Report -->
-      <div *ngIf="isCompleted">
-        <h3>Generated Report</h3>
-        <mat-card appearance="outlined">
-          <mat-card-content>
-            <h4>{{ finalResponse?.llm_response?.title }}</h4>
-            <h5>{{ finalResponse?.llm_response?.excerpt }}</h5>
-            <!-- If full_article contains HTML or markdown that you want rendered as HTML -->
-            <div [innerHTML]="finalResponse?.llm_response?.full_article"></div>
-          </mat-card-content>
-        </mat-card>
-
-        <!-- Download Format Selection -->
-        <div>
-          <label for="download-format">Choose download format: </label>
-          <select id="download-format" [(ngModel)]="selectedFormat">
-            <option value="txt">Text (.txt)</option>
-            <option value="pdf">PDF (.pdf)</option>
-          </select>
-        </div>
-
-        <!-- Download Report Button -->
-        <button mat-raised-button (click)="downloadReport()">Download Report</button>
-
-        <!-- Feedback Section -->
-        <div *ngIf="isFeedbackStage">
-          <mat-card appearance="outlined">
-            <mat-card-header><h3>Feedback</h3></mat-card-header>
-            <mat-card-content>
-              <textarea [(ngModel)]="feedback" placeholder="Provide your feedback..."></textarea>
-              <button (click)="submitFeedback()">Submit Feedback</button>
-            </mat-card-content>
-          </mat-card>
-        </div>
       </div>
 
       <!-- Chat History -->
