@@ -12,14 +12,6 @@ import { jsPDF } from 'jspdf';
 import { ArticleDetailDialogComponent } from '../article-detail-dialog/article-detail-dialog.component';
 
 
-// export interface Report {
-//   llm_response: {
-//     title: string;
-//     excerpt: string;
-//     full_article: string;
-//   };
-// }
-
 interface Article {
   document_id: string;
   user_id: string;
@@ -136,11 +128,6 @@ export class ChatbotComponent {
           if (this.isCompleted && res.result && res.result.full_article) {
             this.finishArticleCreation(res.result);
           }
-          // this.finalResponse = {
-          //   llm_response: res.result.llm_response || { title: '', excerpt: '', full_article: '' },
-          // };
-          // this.isFeedbackStage = true;
-          // this.currentQuestion = "Did this report meet your expectations? Provide feedback:";
         }
       },
       error: (err) => {
@@ -186,83 +173,6 @@ export class ChatbotComponent {
 
   finishArticleCreation(article: Article): void {
     // Close the chatbot modal
-    //if (this.dialogRef) {
     this.dialogRef.close(article);
-
-  //   // Open the article detail dialog and pass the generated article data.
-  //   this.dialogRef.afterClosed().subscribe(() => {
-  //     this.dialog.open(ArticleDetailDialogComponent, {
-  //       width: '80vw', // Adjust width as needed
-  //       panelClass: 'custom-dialog-container',
-  //       data: { article: article, userId: userId, sessionId: sessionId }
-  //     });
-  //   });
-  //   } else {
-  //   // If dialogRef is undefined, open the article detail dialog immediately
-  //   this.dialog.open(ArticleDetailDialogComponent, {
-  //     width: '80vw',
-  //     panelClass: 'custom-dialog-container',
-  //     data: { article: article, userId: userId, sessionId: sessionId }
-  //   });
-  // }
   }
-
-  
-  // downloadReport(): void {
-  //   const articleTitle = this.finalResponse?.llm_response?.title || 'No content available';
-  //   const articleExcerpt = this.finalResponse?.llm_response?.excerpt || 'No content available';
-  //   const articleContent = this.finalResponse?.llm_response?.full_article || 'No content available';
-  //   const combinedText = `${articleTitle}\n\n${articleExcerpt}\n\n${articleContent}`;
-
-  //   const blob: Blob = this.selectedFormat === 'txt'
-  //     ? new Blob([combinedText], { type: 'text/plain' })
-  //     : this.createPdfBlob(articleTitle, articleExcerpt, articleContent);
-
-  //   const link = document.createElement('a');
-  //   link.href = URL.createObjectURL(blob);
-  //   link.download = this.selectedFormat === 'txt' ? 'generated_report.txt' : 'generated_report.pdf';
-  //   link.click();
-  // }
-
-  // // Helper function to create a PDF Blob from content
-  // createPdfBlob(title: string, excerpt: string, content: string): Blob {
-  //   const pdfDoc = new jsPDF();
-  //   pdfDoc.setFontSize(18);
-  //   pdfDoc.text(title, 10, 20);
-
-  //   // Add the excerpt with a medium font size
-  //   pdfDoc.setFontSize(14);
-  //   pdfDoc.text(excerpt, 10, 40);
-
-  //   // Add the full article content with a normal font size.
-  //   // splitTextToSize handles long text wrapping automatically.
-  //   pdfDoc.setFontSize(12);
-  //   const splitContent = pdfDoc.splitTextToSize(content, 180); // Adjust the width as needed
-  //   pdfDoc.text(splitContent, 10, 60);
-  //   //pdfDoc.text(content, 10, 10); // Starting point (x, y) in PDF
-  //   return pdfDoc.output('blob');
-  // }
-
-  // onSubmit() {
-  //   this.isLoading = true;
-  //   this.errorMessage = '';
-  //   if (!this.userInput.trim() || !this.industry.trim() || !this.businessGoal.trim()) {
-  //     alert('Please fill in all fields.');
-  //     return;
-  //   }
-
-  //   this.chatbotService.submitQuestion(this.userInput, this.industry, this.businessGoal).subscribe({
-  //     next: (res) => {
-  //       this.chatResponse = res.response; // Update based on API's response format
-  //       this.followUpQuestions = res.follow_up_questions;
-  //       this.isLoading = false;
-  //     },
-  //     error: (error) => {
-  //       this.errorMessage = error.message;
-  //       this.chatResponse = 'An error occurred. Please try again later.';
-  //       this.followUpQuestions = [];
-  //       this.isLoading = false;
-  //     },
-  //   });
-  // }
 }

@@ -316,10 +316,11 @@ button:hover {
 
 /* Enhance Article Title Font Size */
 .mat-mdc-dialog-container .mat-mdc-dialog-title.article-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
-    padding: 24px;
-    margin: 24px;
+    padding: 12px;
+    margin: 12px;
+    line-height: 1;
 }
 
 /* Dynamic Image Container */

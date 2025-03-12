@@ -58,11 +58,11 @@ export class ChatbotService {
    * @param userResponse - The user's response to the current chatbot question.
    * @returns Observable<any> - The backend's response.
    */
-  submitChatbotResponse(sessionId: string, userId: string, selectedAuthorId: string, userResponse: string | null): Observable<any> {
+  submitChatbotResponse(sessionId: string, userId: string, selectedAuthorId: string | null, userResponse: string | null): Observable<any> {
     const payload = {
       session_id: sessionId,
       user_id: userId,
-      selectedAuthorId: selectedAuthorId,
+      selected_author_id: selectedAuthorId,
       user_response: userResponse,
     };
 
