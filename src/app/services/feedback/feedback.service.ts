@@ -51,10 +51,6 @@ export class FeedbackService {
       session_id: session_id,
       feedback_date: new Date(), 
       feedback: {
-        // document_id: feedback.documentId,
-        // ratings: feedback.starRating,
-        // reactions: feedback.reaction,
-        // comments: feedback.comments
       }
     };
     if (feedback && feedback.documentId) {

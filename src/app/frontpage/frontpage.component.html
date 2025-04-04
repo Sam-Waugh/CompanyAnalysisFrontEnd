@@ -1,67 +1,66 @@
+<main class="reddit-style">
 <mat-card-header class="page-header">
-<div class="header-container">
-  <h1 class="discover-heading">Discover Your Next Read</h1>
-</div>
-</mat-card-header>
-<main>
-
-<mat-card class="chatbot-container" style="cursor: pointer; width: 100%; color: black;" (click)="openChatbotModal()">
-  <div class="chatbot-modal-trigger" style="text-align: center; margin-top: 20px;">
-      <h2 style="color: #474347;">Can't find any articles to your taste? Chat to us and let us know what you'd like us to write about</h2>
+  <div class="header-container">
+    <h1 class="discover-heading">Discover Your Next Read</h1>
   </div>
-</mat-card>
+</mat-card-header>
+<main class="reddit-style">
 
-<mat-sidenav-container class="container">
-  <!-- Main Content (Article Feed) -->
-  <mat-sidenav-content class="feed-container">
-    <h3>Personalised Articles</h3>  
-
-  <mat-card *ngFor="let article of articles" (click)="viewArticle(article, userId, sessionId)" style="cursor: pointer;">
-    <div *ngIf="article.isUnread" class="new-badge">NEW</div>
-    <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
-      <!-- Left: Article title -->
-        <div>
-          <mat-card-title style="text-align: left; font-size: 70%; font-weight: bold;">{{ article.title }}</mat-card-title>
-        </div>
-         <!-- Right: Author info -->
-        <div style="display: flex; align-items: center;">
-          <img *ngIf="article.author_photo_path" [src]="article.author_photo_path" [alt]="article.author_name" 
-               style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; margin-left: 15px;">
-          <span style="text-align: right; font-size: 40%; font-style: italic;" *ngIf="article.author_name">{{ article.author_name }}</span>
-        </div>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ article.excerpt }}</p>
-    </mat-card-content>
+  <mat-card class="chatbot-container" (click)="openChatbotModal()">
+    <div class="chatbot-modal-trigger">
+      <h2>Can't find any articles to your taste? Chat to us and let us know what you'd like us to write about</h2>
+    </div>
   </mat-card>
 
-  </mat-sidenav-content>
+  <mat-sidenav-container class="container">
+    <!-- Main Content (Article Feed) -->
+    <mat-sidenav-content class="feed-container">
+      <h3>Personalised Articles</h3>  
+
+      <mat-card *ngFor="let article of articles" class="post-card" (click)="viewArticle(article, userId, sessionId)">
+        <div *ngIf="article.isUnread" class="new-badge">NEW</div>
+        <mat-card-header class="post-header">
+          <!-- Left: Article title -->
+          <div class="post-title">
+            <mat-card-title>{{ article.title }}</mat-card-title>
+          </div>
+          <!-- Right: Author info -->
+          <div class="post-author">
+            <img *ngIf="article.author_photo_path" [src]="article.author_photo_path" [alt]="article.author_name">
+            <span *ngIf="article.author_name">{{ article.author_name }}</span>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ article.excerpt }}</p>
+        </mat-card-content>
+      </mat-card>
+
+    </mat-sidenav-content>
 
     <!-- Sidebar (Quizzes) -->
-  <mat-sidenav mode="side" position="end" opened class="quiz-sidebar">
-    <h2>Fun Quizzes 🎉</h2>
-
-    <div *ngIf="quizzes.length === 0">
-      <p>No quizzes available at the moment.</p>
-    </div>
-    <div *ngIf="quizzes.length > 0">
-      <div *ngFor="let quiz of quizzes">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{ quiz.question }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <button mat-button *ngFor="let option of quiz.options" (click)="submitQuizAnswer({ 
-              quiz_question: quiz.question, 
-              quiz_options: quiz.options.join(', '), 
-              selected_value: option 
-            }, userId, sessionId)">
-              {{ option }}
-            </button>
-          </mat-card-content>
-        </mat-card>
+    <mat-sidenav mode="side" position="end" opened class="quiz-sidebar">
+      <h2>Fun Quizzes 🎉</h2>
+      <div *ngIf="quizzes.length === 0">
+        <p>No quizzes available at the moment.</p>
       </div>
-    </div>
-  </mat-sidenav>
-</mat-sidenav-container>
+      <div *ngIf="quizzes.length > 0">
+        <div *ngFor="let quiz of quizzes">
+          <mat-card class="quiz-card">
+            <mat-card-header>
+              <mat-card-title>{{ quiz.question }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <button mat-button *ngFor="let option of quiz.options" (click)="submitQuizAnswer({ 
+                quiz_question: quiz.question, 
+                quiz_options: quiz.options.join(', '), 
+                selected_value: option 
+              }, userId, sessionId)">
+                {{ option }}
+              </button>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-sidenav>
+  </mat-sidenav-container>
 </main>
