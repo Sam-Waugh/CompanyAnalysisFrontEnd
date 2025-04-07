@@ -108,6 +108,10 @@ export class ChatbotComponent {
     });
   }
 
+  get selectedAuthor() {
+    return this.authors.find(author => author.id === this.selectedAuthorId);
+  }
+
   /**
   * Handles user responses and submits them to the backend.
   * @param response - User's response to the current question.

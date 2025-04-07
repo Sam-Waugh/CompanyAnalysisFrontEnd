@@ -14,6 +14,7 @@ import { ArticleDetailDialogComponent, Feedback } from '../article-detail-dialog
 import { FeedbackService } from '../services/feedback/feedback.service';
 import { QuizzesService } from '../services/quizzes/quizzes.service';
 import { ChatbotComponent } from '../chatbot/chatbot.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 interface Article {
   document_id: string;
@@ -42,7 +43,8 @@ interface Quiz {
   selector: 'app-article-feed',
   standalone: true,
   imports: [MatDialogModule, CommonModule, MatCardModule, MatButtonModule, MatListModule, MatSidenavModule,
-    MatDividerModule, MatBadgeModule],
+    MatDividerModule, MatBadgeModule, MatSnackBarModule],
+  providers: [MatSnackBar],
   templateUrl: './frontpage.component.html',
   styleUrls: ['./frontpage.component.css']
 })
@@ -63,7 +65,7 @@ export class FrontpageComponent {
     }
   }
 
-  constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService, private quizzesService: QuizzesService) { }
+  constructor(private dialog: MatDialog, private articlesService: ArticlesService, private feedbackService: FeedbackService, private quizzesService: QuizzesService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.fetchArticles();
@@ -139,9 +141,17 @@ export class FrontpageComponent {
       .subscribe({
         next: (response: any) => {
           console.log("Quiz feedback submitted:", response);
+          this.snackBar.open('Quiz response has been submitted!', 'Dismiss', {
+            duration: 5000,  // The notification will be visible for 3 seconds
+            verticalPosition: 'top'
+          });
         },
         error: (error: any) => {
           console.error("Error submitting quiz feedback:", error);
+          this.snackBar.open('Error submitting quiz answer. Please try again.', 'Dismiss', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
         }
       });
   }

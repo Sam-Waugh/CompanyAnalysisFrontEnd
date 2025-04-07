@@ -1,80 +1,53 @@
 <h2 mat-dialog-title class="article-title">{{ data.article.title }}</h2>
-<mat-dialog-content style="max-height:80%;">
-    <!-- Article Image -->
+<mat-dialog-content class="article-content" #contentContainer>
+  <!-- Article Image -->
   <div class="article-image-container">
-    <img
-      [src]="data.article.article_image"
-      [alt]="data.article.title"
-      class="article-image"
-    />
+    <img [src]="data.article.article_image" [alt]="data.article.title" class="article-image" />
   </div>
 
-  <!-- Full Article: string or object -->
+  <!-- Full Article -->
   <div class="full-article" *ngIf="isString(data.article.full_article); else objectArticle">
     <div [innerHTML]="removeTitleTags(data.article.full_article)"></div>
   </div>
   <ng-template #objectArticle>
-    <div *ngFor="let section of data.article.full_article | keyvalue">
-      <h3 style="margin-top: 24px;">{{ formatKey(section.key) | titlecase }}</h3>
-      <!-- If section.value has a "text" property, use it; otherwise, display the value directly -->
+    <div *ngFor="let section of data.article.full_article | keyvalue" class="article-section">
+      <h3 class="section-title">{{ formatKey(section.key) | titlecase }}</h3>
       <div [innerHTML]="getSectionContent(section.value)"></div>
     </div>
   </ng-template>
 
   <!-- Author Info -->
-  <div class="author-info" style="display: flex; align-items: center; margin-bottom: 16px;">
-    <img
-      [src]="data.article.author_photo_path"
-      [alt]="data.article.author_name"
-      class="author-photo"
-      style="width: 150px; height: 150px; border-radius: 50%; margin-right: 20px;"
-    />
-    <span class="author-name" style="font-weight: bold; font-size: 1.5rem;">Author: {{ data.article.author_name }}</span>
+  <div class="author-info">
+    <img [src]="data.article.author_photo_path" [alt]="data.article.author_name" class="author-photo" />
+    <span class="author-name">Author: {{ data.article.author_name }}</span>
   </div>
 
   <!-- Personal Explanation -->
-  <div style="margin-top: 24px; margin-bottom: 24px; padding-top: 24px; padding-bottom: 24px;">
-    <h3 style="text-align: center; color: black;">Personal Explanation</h3>
-    <p style="line-height: 1.6; font-size: 1.2rem; color: #000;">
-      {{ data.article.personal_explanation }}
-    </p>
+  <div class="personal-explanation">
+    <h3 class="explanation-title">Personal Explanation</h3>
+    <p>{{ data.article.personal_explanation }}</p>
   </div>
-  
-  <!-- Feedback Section -->
-  <h3 style="margin-top: 24px; padding-top: 24px; text-align: center; color: black;">Give Your Feedback</h3>
 
+  <!-- Feedback Section -->
+  <h3 class="feedback-title">Give Your Feedback</h3>
   <!-- Star Rating -->
-  <div style="display: flex; align-items: center; margin-bottom: 36px;">
-    <span style="margin-right: 8px; font-size: 1.5rem">Star Rating:</span>
+  <div class="star-rating">
+    <span class="star-label">Star Rating:</span>
     <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-      <mat-icon style="overflow: none; padding-right:10px; height: 100%; width: 100%;"
-        (click)="setStarRating(star)" 
-        style="cursor: pointer; font-size: 32px; margin-bottom: 10px; height: 100%; width: 30px; color: #ffa000;">
+      <mat-icon class="star-icon" (click)="setStarRating(star)">
         {{ star <= (feedback.starRating ?? 0) ? 'star' : 'star_border' }}
       </mat-icon>
     </ng-container>
   </div>
-  
   <!-- Emoticon Reactions -->
- <div style="margin: 16px 0;">
-    <div style="display: flex;">
-      <button mat-button (click)="setReaction('love')" [class.selected]="feedback.reaction === 'love'">
-        😍 Love
-      </button>
-      <button mat-button (click)="setReaction('insightful')" [class.selected]="feedback.reaction === 'insightful'">
-        💡 Insightful
-      </button>
-      <button mat-button (click)="setReaction('boring')" [class.selected]="feedback.reaction === 'boring'">
-        😒 Boring
-      </button>
-      <button mat-button (click)="setReaction('rubbish')" [class.selected]="feedback.reaction === 'rubbish'">
-        🤮 Rubbish
-      </button>
-    </div>
+  <div class="emoticon-reactions">
+    <button mat-button (click)="setReaction('love')" [class.selected]="feedback.reaction === 'love'">😍 Love</button>
+    <button mat-button (click)="setReaction('insightful')" [class.selected]="feedback.reaction === 'insightful'">💡 Insightful</button>
+    <button mat-button (click)="setReaction('boring')" [class.selected]="feedback.reaction === 'boring'">😒 Boring</button>
+    <button mat-button (click)="setReaction('rubbish')" [class.selected]="feedback.reaction === 'rubbish'">🤮 Rubbish</button>
   </div>
-  
   <!-- Written Feedback -->
-  <mat-form-field appearance="fill" style="width: 100%;">
+  <mat-form-field appearance="fill" class="feedback-comments">
     <mat-label>Written Feedback</mat-label>
     <textarea matInput [(ngModel)]="feedback.comments"></textarea>
   </mat-form-field>

@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { NgModule } from '@angular/core';
+import { AfterViewInit, Component, Inject, ElementRef, ViewChild } from '@angular/core';
+//import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { FeedbackService } from '../services/feedback/feedback.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 export interface Feedback {
   documentId?: string;
@@ -25,6 +26,7 @@ export interface Feedback {
 
 @Component({
   selector: 'app-article-detail-dialog',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -35,11 +37,14 @@ export interface Feedback {
     MatButtonModule,
     MatButtonToggleModule,
     MatIconModule,
+    MatSnackBarModule
   ],
+  providers: [MatSnackBar],
   templateUrl: './article-detail-dialog.component.html',
   styleUrl: './article-detail-dialog.component.scss'
 })
-export class ArticleDetailDialogComponent {
+export class ArticleDetailDialogComponent implements AfterViewInit {
+  @ViewChild('contentContainer') contentContainer!: ElementRef;
   article: any;
   
   feedback: Feedback = {
@@ -52,10 +57,21 @@ export class ArticleDetailDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ArticleDetailDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { article: any, userId: string, sessionId: string },
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService, private snackBar: MatSnackBar
   ) {
     this.article = data.article;
     this.feedback.documentId = this.data.article.document_id;
+  }
+
+  ngAfterViewInit(): void {
+    // Reset the scroll position of the dialog content to the top
+    this.dialogRef.afterOpened().subscribe(() => {
+     setTimeout(() => {
+    if (this.contentContainer && this.contentContainer.nativeElement) {
+      this.contentContainer.nativeElement.scrollTop = 0;
+    }
+     }, 0);
+        });
   }
 
   isString(value: any): boolean {
@@ -98,10 +114,18 @@ export class ArticleDetailDialogComponent {
     .subscribe({
       next: (response: any) => {
         console.log("Feedback submitted:", response);
+        this.snackBar.open('Feedback has been submitted!', 'Dismiss', {
+          duration: 5000,
+          verticalPosition: 'top'
+        });
         this.dialogRef.close(this.feedback);
       },
       error: (error: any) => {
         console.error("Error submitting feedback:", error);
+        this.snackBar.open('Error submitting feedback. Please try again.', 'Dismiss', {
+          duration: 3000,
+          verticalPosition: 'top'
+        });
       }
     });
 }

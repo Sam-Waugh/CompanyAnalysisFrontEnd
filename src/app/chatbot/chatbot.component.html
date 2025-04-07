@@ -1,53 +1,53 @@
-<main class="main">
-  <div class="content">
-    <h2>{{ prompt }}</h2>
-
-    <div class="chatbot-container">
+<main class="reddit-chatbot">
+  <div class="chatbot-content">
+    <h2 class="chatbot-prompt">{{ prompt }}</h2>
+    <mat-card class="chatbot-card">
       <!-- Loading Indicator -->
       <div *ngIf="isLoading" class="loading">Loading...</div>
 
-      <div class="author-selection" style="margin-bottom: 16px;">
-      <mat-form-field appearance="fill" style="width: 100%;">
-        <mat-label>Select Author</mat-label>
-        <mat-select [(ngModel)]="selectedAuthorId">
-          <mat-option *ngFor="let author of authors" [value]="author.id">
-            <div style="display: flex; align-items: center;">
-              <!-- Author photo -->
-              <img [src]="author.author_photo_path" 
-                  alt="{{ author.author_name }}" 
-                  style="width:40px; height:40px; object-fit: cover; margin-right: 12px;">
-              <!-- Text container for name and description -->
-              <div>
-                <!-- Name in bold -->
-                <div style="font-weight: bold;">{{ author.author_name }}</div>
-                <!-- Description left aligned -->
-                <div style="text-align: left;">{{ author.author_description }}</div>
+      <!-- Author Selection -->
+      <div class="author-selection" *ngIf="!isLoading">
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Select Author</mat-label>
+          <mat-select [(ngModel)]="selectedAuthorId">
+            <mat-select-trigger>
+              {{ selectedAuthor?.author_name || 'Select Author' }}
+            </mat-select-trigger>
+            <mat-option *ngFor="let author of authors" [value]="author.id">
+              <div class="author-option">
+                <img class="author-photo" [src]="author.author_photo_path" alt="{{ author.author_name }}" class="author-photo">
+                <div class="author-text">
+                  <div class="author-name">{{ author.author_name }}</div>
+                  <div class="author-description">{{ author.author_description }}</div>
+                </div>
               </div>
-            </div>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-      <!-- Chatbot Question and User Input -->
-      <div *ngIf="!isCompleted && !isLoading">
-        <mat-card appearance="outlined">
-          <mat-card-header><h3>Chatbot:</h3></mat-card-header>
+      <!-- Chat Input Area -->
+      <div *ngIf="!isCompleted && !isLoading" class="chat-input-area">
+        <mat-card class="chat-input-card">
+          <mat-card-header>
+            <h3 class="chat-header">Chatbot:</h3>
+          </mat-card-header>
           <mat-card-content>
-            <p>{{ currentQuestion }}</p>
-            <input [(ngModel)]="userResponse" type="text" placeholder="Type your response here" [disabled]="!currentQuestion || isLoading" 
-            style="width: 80%; height: 50px; font-size: 16px; padding: 8px;"/>
+            <p class="chat-question">{{ currentQuestion }}</p>
+            <input [(ngModel)]="userResponse" type="text" placeholder="Type your response here" class="chat-input" [disabled]="!currentQuestion || isLoading" />
           </mat-card-content>
         </mat-card>
-        <button (click)="submitResponse(userResponse)" [disabled]="!userResponse.trim()">Submit</button>
+        <button class="chat-submit-button" (click)="submitResponse(userResponse)" [disabled]="!userResponse.trim()">Submit</button>
       </div>
 
       <!-- Chat History -->
       <div *ngIf="chatHistory.length > 0" class="chat-history">
-        <mat-card appearance="outlined">
-          <mat-card-header><h3>Chat History</h3></mat-card-header>
+        <mat-card class="chat-history-card">
+          <mat-card-header>
+            <h3 class="history-header">Chat History</h3>
+          </mat-card-header>
           <mat-card-content>
-            <div *ngFor="let chat of chatHistory">
+            <div *ngFor="let chat of chatHistory" class="chat-entry">
               <p><strong>Chatbot:</strong> {{ chat.question }}</p>
               <p><strong>You:</strong> {{ chat.answer }}</p>
               <hr />
@@ -57,14 +57,8 @@
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-    </div>
-
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </mat-card>
     <div class="divider" role="separator" aria-label="Divider"></div>
   </div>
 </main>
-
-
-
-
-

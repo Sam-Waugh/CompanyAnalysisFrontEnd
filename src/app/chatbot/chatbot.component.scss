@@ -49,10 +49,3 @@ mat-card-content {
      position: relative;
  }
 
-@use '@angular/material' as mat;
-
-:host {
-    @include mat.card-overrides((subtitle-text-color: orange,
-            elevated-container-color: red,
-        ));
-}
