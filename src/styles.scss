@@ -300,6 +300,25 @@ h3 {
     color: #555;
 }
 
+.post-body {
+    display: flex; 
+    align-items: flex-start; 
+}
+
+.article-thumb {
+    width: 200px; 
+    height: 125px;
+    flex: 0 0 auto; // never stretch
+    object-fit: contain;
+    border-radius: 0px;
+    margin: 25px;
+}
+
+.excerpt {
+    flex: 1 1 0;
+    margin: 15px;
+}
+
 /* "New" Badge */
 .new-badge {
     background-color: #FF4500;
@@ -314,10 +333,8 @@ h3 {
 
 /* Sidebar (Quiz) Styling */
 .quiz-sidebar {
-    //background-color: #ffffff !important; // A neutral light gray background
     background-color: #f4f4f4 !important;
     padding: 20px;
-    //border: 1px solid #ddd;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;

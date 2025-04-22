@@ -43,7 +43,13 @@
           </div>
         </mat-card-header>
         <mat-card-content>
-          <p>{{ article.excerpt }}</p>
+          <div class="post-body">
+            <img *ngIf="article.article_image"
+                [src]="article.article_image"
+                [alt]="article.title + ' thumbnail'"
+                class="article-thumb">
+            <p class="excerpt">{{ article.excerpt }}</p>
+          </div>
         </mat-card-content>
       </mat-card>
 
