@@ -10,6 +10,7 @@ import { ChatbotPerplexityService } from '../services/chatbot/chatbot-perplexity
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { jsPDF } from 'jspdf';
 import { ArticleDetailDialogComponent } from '../article-detail-dialog/article-detail-dialog.component';
+import { environment } from '../../environments/environment';
 
 
 interface Article {
@@ -49,7 +50,7 @@ interface Author {
 export class ChatbotComponent {
   userResponse: string = '';
   currentQuestion: string = '';
-  userId: string = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb";
+  userId: string = environment.userId;
   sessionId: string = '';
   chatHistory: { question: string, answer: string }[] = [];
   isCompleted: boolean = false;

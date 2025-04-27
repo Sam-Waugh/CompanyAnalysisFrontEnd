@@ -15,6 +15,7 @@ import { FeedbackService } from '../services/feedback/feedback.service';
 import { QuizzesService } from '../services/quizzes/quizzes.service';
 import { ChatbotComponent } from '../chatbot/chatbot.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { environment } from '../../environments/environment';
 
 interface Article {
   document_id: string;
@@ -49,9 +50,8 @@ interface Quiz {
   styleUrls: ['./frontpage.component.css']
 })
 export class FrontpageComponent {
-  //@ViewChild('quizTemplate') quizTemplate!: TemplateRef<any>;
   //UserId GUID
-  userId = "41a90bc4-408c-4ae4-9bc0-27a6357ab8eb"
+  userId = environment.userId;
   sessionId = "";
   articles: Article[] = [];
 
