@@ -15,6 +15,7 @@ export class QuizzesService {
      * Fetches articles from backend.
      * @param userId - Unique identifier for the user.
      * @returns Observable<any> - The backend's response with the list of articles.
+     * RxJS guidance used: https://rxjs.dev/guide/overview
      */
     getQuizzes(userId: string): Observable<any> {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -31,6 +32,7 @@ export class QuizzesService {
      * Handles errors from HTTP requests.
      * @param error - The error response object.
      * @returns Observable<never> - Throws a user-friendly error message.
+     * RxJS guidance used: https://rxjs.dev/guide/overview
      */
     private handleError(error: HttpErrorResponse): Observable<never> {
       console.error('Error in QuizzesService:', error);

@@ -1,5 +1,4 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
@@ -50,7 +49,7 @@ interface Quiz {
   styleUrls: ['./frontpage.component.css']
 })
 export class FrontpageComponent {
-  //UserId GUID
+  // Built using Angular Material documentation: https://material.angular.dev/components/categories
   userId = environment.userId;
   sessionId = "";
   articles: Article[] = [];
@@ -121,9 +120,6 @@ export class FrontpageComponent {
       data: { article: article, userId: userId, sessionId: sessionId }
     });
     // Future: Open article in a dialog and log user interaction
-
-    // // After clicking on an article, trigger a quiz to gather feedback
-    // this.openQuiz();
   }
 
   generateSessionId(): string {
@@ -132,7 +128,6 @@ export class FrontpageComponent {
 
   logFeedback(category: string) {
     console.log(`User prefers articles about: ${category}`);
-    // Future: Send user preference data to backend for personalised recommendations
   }
 
   submitQuizAnswer(quiz: { quiz_question: string, quiz_options: string, selected_value: string }, user_id: string, session_id: string): void {

@@ -22,6 +22,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 })
   
 export class QuestionFormComponent {
+  // Built using Angular Material documentation: https://material.angular.dev/components/categories
   question: string = '';
   response: any;
   responsePerplexity: any;

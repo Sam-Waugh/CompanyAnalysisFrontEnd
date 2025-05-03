@@ -12,20 +12,6 @@ export class ChatbotService {
 
   constructor(private http: HttpClient) {}
 
-  // submitQuestion(question: string, industry: string, businessGoal: string): Observable<any> {
-  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //   const body = { question, industry, businessGoal };
-
-  //   return this.http.post<any>(this.apiUrl, body, { headers }).pipe(
-  //     map(response => response), // Pass the API response directly
-  //     // Catch and handle errors from the API
-  //     catchError((error) => {
-  //       console.error('Error occurred while communicating with the chatbot API:', error);
-  //       return throwError(() => new Error('Failed to get a response from the chatbot API. Please try again later.'));
-  //     })
-  //   );
-  // }
-
   getAuthors(): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
@@ -38,16 +24,13 @@ export class ChatbotService {
 /**
    * Starts a new chatbot session and fetches the first question.
    * @returns Observable<any> - The backend's initial question.
+   * RxJS guidance used: https://rxjs.dev/guide/overview
    */
   startChatSession(): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post<any>(`${this.chatbotEndpoint}`, {}, { headers }).pipe(
       tap(response => console.log('Chat session started:', response)),
-      // map((response) => {
-      //   console.log('Chat session started:', response);
-      //   return response;
-      // }),
       catchError(this.handleError)
     );
   }
@@ -57,6 +40,7 @@ export class ChatbotService {
    * @param sessionId - Unique session identifier for the user.
    * @param userResponse - The user's response to the current chatbot question.
    * @returns Observable<any> - The backend's response.
+   * RxJS guidance used: https://rxjs.dev/guide/overview
    */
   submitChatbotResponse(sessionId: string, userId: string, selectedAuthorId: string | null, userResponse: string | null): Observable<any> {
     const payload = {
@@ -82,6 +66,7 @@ export class ChatbotService {
    * Fetches the next question for a given session.
    * @param sessionId - Unique session identifier for the user.
    * @returns Observable<any> - The backend's response with the next question.
+   * RxJS guidance used: https://rxjs.dev/guide/overview
    */
   getNextQuestion(sessionId: string, userId: string, userResponse: string = ''): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -92,26 +77,12 @@ export class ChatbotService {
       catchError(this.handleError)
     );
   }
-    //const url = `${this.chatbotEndpoint}/next-question`;
-    //return this.http.get<any>(`${this.chatbotEndpoint}/next-question`, { headers, params: { session_id: sessionId } }).pipe(
-      //map((response) => {
-        //console.log('Next question response:', response);
-        //return response;
-      //}),
-    // return this.http.get<any>(url, { headers, params: { session_id: sessionId } }).pipe(
-    //   map((response) => {
-    //     console.log('Next question response:', response);
-    //     return response;
-    //   }),
-      //catchError(this.handleError)
-    //);
-  //}
-
   /**
    * Sends user feedback to the backend.
    * @param sessionId - Unique session identifier for the user.
    * @param feedback - User feedback on the chatbot's response or generated content.
    * @returns Observable<any> - The backend's response.
+   * RxJS guidance used: https://rxjs.dev/guide/overview
    */
   submitUserFeedback(sessionId: string, userId: string, feedback: string): Observable<any> {
     const payload = {
@@ -121,9 +92,7 @@ export class ChatbotService {
     };
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    //const url = `${this.chatbotEndpoint}/feedback`;
     return this.http.post<any>(`${this.chatbotEndpoint}/feedback`, payload, { headers }).pipe(
-    //return this.http.post<any>(url, payload, { headers }).pipe(
       map((response) => {
         console.log('Feedback submission response:', response);
         return response;
@@ -136,6 +105,7 @@ export class ChatbotService {
    * Handles errors from HTTP requests.
    * @param error - The error response object.
    * @returns Observable<never> - Throws a user-friendly error message.
+   * RxJS guidance used: https://rxjs.dev/guide/overview
    */
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.error('Error in ChatbotService:', error);

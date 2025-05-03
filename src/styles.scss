@@ -1,26 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
 
-//@use '@angular/material' as mat;
-
-// //Customize the entire app. Change :root to your selector if you want to scope the styles.
-// :root {
-//     @include mat.card-overrides((
-//             outlined-container-color: rgba(30, 229, 229, 0.95),
-//             outlined-container-shape: oval, 
-//         ));
-// }
+// Angular Material Theming and colour guidance used: https: //material.angular.dev/guide/theming
 @use "@angular/material" as mat;
-
-// html {
-//     @include mat.theme((color: (
-                // $reddit-primary: mat.define-palette(mat.$deep-orange, 500);
-                // $reddit-accent: mat.define-palette(mat.$grey, 500);
-                // $reddit-warn: mat.define-palette(mat.$red);
-                // $reddit-theme: mat.define-light-theme($reddit-primary, $reddit-accent, $reddit-warn);
-                // @include mat.all-component-themes($reddit-theme);
-//             ),
-//             typography: Roboto,
-//             density: 0));
 
 html {
         color-scheme: light dark;
@@ -36,18 +16,6 @@ html {
                         ));
     }
 
-// }
-
-// /* Style for the main content container */
-// main {
-//     width: 100%;
-//     margin: 0;
-//     min-height: 100vh;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-// }
-
 .main-content {
     display: flex;
     justify-content: space-between;
@@ -61,7 +29,6 @@ body {
     margin: 0;
     width: 100%;
     font-size: 22px;
-    //text-align: center;
 }
 
 /* Angular Material Theme Overrides */
@@ -70,16 +37,6 @@ body {
     --mdc-elevated-card-container-color: #ffffff;
     --mat-sys-surface-container-low: #ffffff;
 }
-// body {
-//     margin: 0;
-//     width: 100%;
-//     font-family: 'Inter';
-//     font-size: 22px;
-//     background-color: #257159;
-//     color:rgb(104, 237, 67);
-//     margin: 20x 0px;
-//     text-align: center;
-// }
 
 /* Header Styling */
 .page-header {
@@ -88,14 +45,12 @@ body {
     padding: 15px 30px 15px 15px;
     //text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    //border-bottom: 2px solid #FF4500;
 }
 
 .header-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    //max-width: 1200px;
     width: 100%;
     margin: 0 auto;
 }
@@ -212,14 +167,12 @@ mat-card:hover {
     max-width: 70%;
     padding: 20px;
     background-color: #f4f4f4 !important;
-    //background-color: #fff !important;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .mat-drawer {
     max-width: 470px;
     border-left: 6px solid #FF4500 !important;
-     //border-top: 6px solid #FF4500 !important;
      border-right: 6px solid #FF4500 !important;
      border-bottom: 6px solid #FF4500 !important;
 }
@@ -238,21 +191,6 @@ h3 {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
 }
-
-// .mat-sidenav-container {
-//     padding: 0px 0px;
-//     width: 100%;
-//     background-color: #257159;
-// }
-
-// .mat-sidenav.mat-drawer{
-//     flex: 1;
-//     width: 35%;
-//     padding: 20px;
-//     background-color: #257159;
-//     border-left: 2px solid #ddd;
-//     overflow-y: auto;
-// }
 
 /* Article Post Cards */
 .post-card {
@@ -575,11 +513,6 @@ button.mat-button {
     color: #FF4500;
 }
 
-// .author-name {
-//     font-weight: bold;
-//     font-size: 1.5rem;
-// }
-
 .personal-explanation {
     text-align: center;
     padding: 20px 0;
@@ -636,329 +569,6 @@ button.mat-button {
     width: 100%;
 }
 
-// body {
-//     margin: 0;
-//     width: 100%;
-//     font-family: 'Inter';
-//     font-size: 22px;
-//     background-color: #257159;
-//     color:rgb(104, 237, 67);
-//     margin: 20x 0px;
-//     text-align: center;
-// }
-
-/* Dark mode improvements */
-// .darkMode {
-//     @include mat.theme((color: (primary: mat.$violet-palette,
-//                 theme-type: dark),
-//             typography: Roboto,
-//             density: 0),
-//         $overrides: ("background": #01050f,
-//         ));
-
-//     body {
-//         background-color: #000205;
-//         color: #f2eeee;
-//     }
-// }
-
-// /* Style for the main content container */
-// main {
-//     width: 100%;
-//     margin: 0;
-//     min-height: 100vh;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     background-color: #257159;
-// }
-
-// .main-content {
-//     display: flex;
-//     justify-content: space-between;
-// }
-
-// .page-header {
-//     display: flex;
-//     justify-content: center;
-//     text-align: center;
-// }
-
-// // .header-container {
-// //     width: 100%;
-// // }
-// /* Header Styling */
-// .header-container {
-//     background-color: #ffffff;
-//     border-bottom: 1px solid #ccc;
-//     padding: 15px;
-//     text-align: center;
-// }
-
-// // .discover-heading {
-// //     font-size: 5rem;
-// //     font-weight: bold;
-// //     background-image: linear-gradient(to right, rgb(204, 132, 225), #ffa500);
-// //     -webkit-background-clip: text;
-// //     background-clip: text;
-// //     color: transparent;
-// //     // text-shadow: 2px 2px 10px rgb(238, 223, 244);
-// //     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-// //     padding: 10px;
-// //     text-align: center;
-// // }
-// .discover-heading {
-//     color: #FF4500; // Reddit's iconic orange
-//     font-size: 1.8rem;
-//     margin: 0;
-// }
-
-// /* Main Container */
-// .reddit-style {
-//     max-width: 1000px;
-//     margin: 20px auto;
-//     padding: 20px;
-// }
-
-// h1 {
-//     font-size: 5rem;
-//     border: rgb(238, 223, 244);
-//     font-weight:3000;
-//     font-style: normal;
-//     text-shadow: 0px 1px 2px rgb(238, 223, 244);
-//     text-align: center;
-// }
-
-// h2 {
-//     color: #fcf9d5;
-// }
-
-// h3 {
-//     color: #fcf9d5;
-//     text-align: left;
-//     padding-left: 20px;
-//     font-size: 2.5rem;
-//     font-weight: bold;
-// }
-
-// /* Article cards - Improved Spacing */
-// mat-card {
-//     width: 85%;
-//     padding: 24px;
-//     margin: 20px 20px;
-//     border-radius: 16px;
-//     box-shadow: 0px 6px 15px rgba(96, 95, 95, 0.15);
-//     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-// }
-
-
-// /* Spacing improvements */
-// mat-card-title {
-//     font-size: 2.5rem;
-//     font-weight: 600;
-//     color: #333;
-//     margin-bottom: 12px;
-//     padding-top: 8px;
-//     white-space: normal;
-//     min-width: 0;
-//     line-height: 1.5;
-// }
-
-// .mat-mdc-card-title {
-//     line-height: 1.15 !important;
-// }
-
-// mat-card-content {
-//     font-size: 1.2rem;
-//     color: #474347;
-//     line-height: 1.6;
-//     text-align: left;
-//     width: 100%;
-// }
-
-// mat-card.mat-mdc-card{
-//     background: #def9bc;
-// }
-
-// mat-card-header.mat-mdc-card-header {
-//     font-size: 3rem;
-// }
-
-// .mat-mdc-button:not(:disabled) {
-//     color: black !important;
-// }
-
-// // .new-badge {
-// //     position: absolute;
-// //     top: 10px;
-// //     right: 10px;
-// //     background-color: red;
-// //     color: white;
-// //     font-weight: bold;
-// //     padding: 4px 8px;
-// //     border-radius: 4px;
-// //     font-size: 0.8em;
-// // }
-// /* "New" Badge */
-// .new-badge {
-//     background-color: #FF4500;
-//     color: white;
-//     padding: 2px 6px;
-//     font-size: 0.7rem;
-//     border-radius: 3px;
-//     position: absolute;
-//     top: 10px;
-//     left: 10px;
-// }
-
-// button {
-//     color: black;
-//     font-weight: bold;
-//     font-size: 3rem;
-//     border-radius: 8px;
-//     padding: 10px 16px;
-//     margin-top: 12px;
-//     transition: background-color 0.3s ease;
-//     background-color: rgb(104, 237, 67);
-//     white-space: normal;
-//     overflow-wrap: break-word;
-//     word-break: break-word;
-// }
-
-// button.mdc-button {
-//     font-size: 1.2rem;
-//     background-color: #ffa500;
-//     border: #333;
-//     border-radius: 25px;
-//     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-//     margin: 2px;
-//     color: white;
-//     height: fit-content;
-//     text-align: left;
-// }
-
-// button:hover {
-//     background-color: rgb(104, 237, 67);
-// }
-
-// .feedback-container {
-//     width: 100%;
-//     background: rgb(204, 132, 225);
-//     text-align: center;
-//     margin: 0px 0px;
-//     border-radius: 0 !important;
-// }
-
-// .feedback-container h2 {
-//     font-size: 3rem;
-//     color: #333;
-//     margin-bottom: 16px;
-// }
-
-// .feedback-container p {
-//     font-size: 1.8rem;
-//     color: #333;
-//     margin-bottom: 16px;
-// }
-
-// .feedback-options {
-//     display: flex;
-//     justify-content: space-between;
-//     gap: 12px;
-// }
-
-// .feedback-options button {
-//     background-color: rgb(204, 132, 225);
-//     color: white;
-//     padding: 10px 16px;
-//     border:#333;
-//     border-radius: 25px;
-//     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-// }
-
-// .feedback-options button:hover {
-//     background-color: rgb(104, 237, 67);
-// }
-
-// .feed-container {
-//     width: 100%;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     gap: 30px;
-//     padding: 40px 20px;
-//     background-color: #257159;
-//     flex: 3;
-//     flex-grow: 1;
-//     margin-right: 300px;
-//     padding: 20px;
-//     overflow-y: auto;
-// }
-
-// .feed-container .mat-card-title.mat-mdc-card-title {
-//     text-align: left;
-// }
-
-// .mat-drawer-content {
-//     width: 100%;
-//     background-color: #257159;
-// }
-
-// .mat-sidenav-content.mat-drawer-content{
-//     width: 65%;
-//     padding: 20px;
-//     background-color: #257159;
-//     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-// }
-
-// .quiz-container {
-//     margin-top: 20px;
-// }
-
-// .quiz-item {
-//     margin-bottom: 20px;
-// }
-
-// .quiz-item button {
-//     margin-top: 10px;
-//     background-color: #ffa500;
-// }
-
-// .mat-sidenav-container {
-//     padding: 0px 0px;
-//     width: 100%;
-//     background-color: #257159;
-// }
-
-// .mat-sidenav.mat-drawer{
-//     flex: 1;
-//     width: 35%;
-//     padding: 20px;
-//     background-color: #257159;
-//     border-left: 2px solid #ddd;
-//     overflow-y: auto;
-// }
-
-// // .quiz-sidebar mat-card {
-// //     margin-bottom: 10px;
-// //     background: rgb(204, 132, 225);
-// // }
-// /* Sidebar (Quiz) Styling */
-// .quiz-sidebar {
-//     background-color: #f6f7f8;
-//     padding: 15px;
-//     border: 1px solid #ccc;
-//     border-radius: 4px;
-// }
-
-// .quiz-card {
-//     background-color: #ffffff;
-//     border: 1px solid #e1e1e1;
-//     border-radius: 4px;
-//     margin-bottom: 15px;
-//     padding: 10px;
-// }
-
 .mat-mdc-dialog-container {
     //width: auto !important;
     height: auto !important;
@@ -974,10 +584,6 @@ button.mat-button {
     width: 60vw !important;
     height: 85%;
 }
-
-// .cdk-overlay-pane {
-//     display: block;
-// }
 
 /* Enhance Article Title Font Size */
 .mat-mdc-dialog-container .mat-mdc-dialog-title.article-title {
@@ -1003,121 +609,8 @@ button.mat-button {
     object-fit: contain;
 }
 
-// /* Full Article Styling */
-// .full-article {
-//     font-size: 1.2rem;
-//     color: #000;
-//     line-height: 1.5;
-//     margin-top: 24px;
-//     margin-bottom: 24px;
-// }
-
-// /* Override any inline styles for headers coming through in full_article */
-// .full-article h1 {
-//     font-size: 2rem;
-//     color: #000 !important;
-//     line-height: 1.5;
-// }
-
-// .full-article h2 {
-//     font-size: 1.8rem;
-//     color: #000 !important;
-//     line-height: 1.5;
-// }
-
-// .full-article h3 {
-//     font-size: 1.6rem;
-//     color: #000 !important;
-//     line-height: 1.5;
-// }
-
-// .full-article p {
-//     font-size: 1.2rem;
-//     color: #000 !important;
-//     line-height: 1.5;
-// }
-
-// .excerpt {
-//     font-size: 1.3rem;
-//     color: #333;
-//     line-height: 1.5;
-// }
-
 /* Hide the duplicate title from the full article content */
 .full-article h1:first-of-type {
     display: none;
 }
-
-// /* Mobile responsiveness */
-// @media screen and (max-width: 768px) {
-//     mat-card {
-//         width: 95%;
-//         padding: 20px;
-//     }
-
-//     .feedback-container {
-//         width: 95%;
-//         padding: 20px;
-//     }
-// }
-
-// /* Chatbot Container */
-// .chatbot-container {
-//     background-color: #ffffff;
-//     border: 1px solid #ccc;
-//     border-radius: 4px;
-//     cursor: pointer;
-//     padding: 15px;
-//     margin-bottom: 20px;
-// }
-
-// .chatbot-modal-trigger h2 {
-//     color: #333;
-//     font-size: 1.2rem;
-//     margin: 0;
-// }
-
-// /* Article Post Card Styling */
-// .post-card {
-//     background-color: #ffffff;
-//     border: 1px solid #e1e1e1;
-//     border-radius: 4px;
-//     margin-bottom: 15px;
-//     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-//     transition: box-shadow 0.3s ease;
-// }
-
-// .post-card:hover {
-//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-// }
-
-// .post-header {
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-//     padding: 10px;
-// }
-
-// .post-title mat-card-title {
-//     font-size: 1rem;
-//     font-weight: bold;
-//     margin: 0;
-// }
-
-// .post-author {
-//     display: flex;
-//     align-items: center;
-// }
-
-// .post-author img {
-//     width: 40px;
-//     height: 40px;
-//     border-radius: 50%;
-//     margin-right: 8px;
-// }
-
-// .post-author span {
-//     font-size: 0.8rem;
-//     color: #555;
-// }
 

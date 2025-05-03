@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, Inject, ElementRef, ViewChild } from '@angular/core';
-//import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
@@ -44,6 +43,7 @@ export interface Feedback {
   styleUrl: './article-detail-dialog.component.scss'
 })
 export class ArticleDetailDialogComponent implements AfterViewInit {
+  // Built using Angular Material documentation: https://material.angular.dev/components/categories
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   article: any;
   

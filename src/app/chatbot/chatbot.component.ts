@@ -6,10 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ChatbotService } from '../services/chatbot/chatbot.service';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ChatbotPerplexityService } from '../services/chatbot/chatbot-perplexity.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { jsPDF } from 'jspdf';
-import { ArticleDetailDialogComponent } from '../article-detail-dialog/article-detail-dialog.component';
 import { environment } from '../../environments/environment';
 
 
@@ -48,6 +45,7 @@ interface Author {
 })
   
 export class ChatbotComponent {
+  // Built using Angular Material documentation: https://material.angular.dev/components/categories
   userResponse: string = '';
   currentQuestion: string = '';
   userId: string = environment.userId;
